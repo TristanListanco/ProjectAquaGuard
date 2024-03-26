@@ -60,63 +60,12 @@ class MainActivity : ComponentActivity() {
 
             AquaGuardTheme {
                 // A surface container using the 'background' color from the theme
-                val items = listOf(
-                    BottomNavigationItem(
-                        title = "Home",
-                        selectedIcon = Icons.Filled.Home,
-                        unselectedIcon = Icons.Outlined.Home
-                    ),
-                    BottomNavigationItem(
-                        title = "Articles",
-                        selectedIcon = Icons.Filled.List,
-                        unselectedIcon = Icons.Outlined.List,
-                    ),
-                    BottomNavigationItem(
-                        title = "About",
-                        selectedIcon = Icons.Filled.Info,
-                        unselectedIcon = Icons.Outlined.Info,
-                    ),
 
-
-
-                )
-                var selectedItemIndex by rememberSaveable {
-                    mutableStateOf(0)
-                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background) {
 
-                    Scaffold(
-                        bottomBar = {
-                            NavigationBar {
-                                items.forEachIndexed { index, item ->
-                                    NavigationBarItem(
-                                        selected = selectedItemIndex == index,
-                                        onClick = {
-                                            selectedItemIndex = index
-                                            // navController.navigate(item.title)
-                                        },
-                                        label = {
-                                            Text(text = item.title)
-                                        },
-                                        alwaysShowLabel = false,
-                                        icon = {
-
-                                                Icon(
-                                                    imageVector = if (index == selectedItemIndex) {
-                                                        item.selectedIcon
-                                                    } else item.unselectedIcon,
-                                                    contentDescription = item.title
-                                                )
-                                        }
-                                    )
-                                }
-                            }
-                        },
-                    ){
-                        AquaGuardianRouter()
-                    }
+                    AquaGuardianRouter()
 
                 }
             }

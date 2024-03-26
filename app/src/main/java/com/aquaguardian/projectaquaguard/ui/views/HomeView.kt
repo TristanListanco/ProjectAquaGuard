@@ -26,13 +26,13 @@ fun HomeView(nav: NavHostController){
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(top = 32.dp, start = 32.dp, end = 32.dp, bottom = 32.dp)) {
-            Text(fontSize = 36.sp, fontFamily = productsans_family, fontWeight = FontWeight.Normal , text = "Good")
+            Text(fontSize = 50.sp, fontFamily = productsans_family, fontWeight = FontWeight.Normal , text = "Good")
 
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp))
 
-            Text(fontSize = 36.sp, fontFamily = productsans_family, fontWeight = FontWeight.Normal , text = "Morning!")
+            Text(fontSize = 50.sp, fontFamily = productsans_family, fontWeight = FontWeight.Normal , text = "Morning!")
         }
 
         Button(onClick = {
