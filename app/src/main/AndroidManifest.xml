@@ -13,6 +13,11 @@
         android:theme="@style/Theme.AquaGuard"
         tools:targetApi="31">
         <activity
+            android:name=".Dashboard"
+            android:exported="false"
+            android:label="@string/title_activity_dashboard"
+            android:theme="@style/Theme.AquaGuard" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
