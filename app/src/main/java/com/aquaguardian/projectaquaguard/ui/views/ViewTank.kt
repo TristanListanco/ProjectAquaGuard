@@ -1,5 +1,4 @@
 package com.aquaguardian.projectaquaguard.ui.views
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
