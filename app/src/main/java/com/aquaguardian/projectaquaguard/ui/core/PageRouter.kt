@@ -1,13 +1,18 @@
 package com.aquaguardian.projectaquaguard.ui.core
 
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import android.annotation.SuppressLint
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.outlined.List
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.MailOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,21 +22,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
-import com.aquaguardian.projectaquaguard.BottomNavigationItem
+import com.aquaguardian.projectaquaguard.core.BottomNavigationItem
+import com.aquaguardian.projectaquaguard.ui.views.AboutView
+import com.aquaguardian.projectaquaguard.ui.views.ArticleView
+import com.aquaguardian.projectaquaguard.ui.views.AuthenticationView
 import com.aquaguardian.projectaquaguard.ui.views.HomeView
 import com.aquaguardian.projectaquaguard.ui.views.ViewTank
 
 
-
 const val isOpened: Boolean = false
+
+/**
+ * Router for the Pages like Home, Dashboard (Where the Navigation Bar is Needed)
+ */
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AquaGuardianRouter(){
+fun PageRouter(mainNavController: NavHostController){
     val navController = rememberNavController()
 
     val items = listOf(
@@ -42,18 +55,15 @@ fun AquaGuardianRouter(){
         ),
         BottomNavigationItem(
             title = "Articles",
-            selectedIcon = Icons.AutoMirrored.Filled.List,
-            unselectedIcon = Icons.AutoMirrored.Outlined.List,
+            selectedIcon = Icons.Filled.Email,
+            unselectedIcon = Icons.Outlined.MailOutline,
         ),
         BottomNavigationItem(
             title = "About",
             selectedIcon = Icons.Filled.Info,
             unselectedIcon = Icons.Outlined.Info,
         ),
-
-
-
-        )
+    )
     var selectedItemIndex by rememberSaveable {
         mutableIntStateOf(0)
     }
@@ -66,7 +76,11 @@ fun AquaGuardianRouter(){
                         selected = selectedItemIndex == index,
                         onClick = {
                             selectedItemIndex = index
-                            // navController.navigate(item.title)
+                            when(selectedItemIndex){
+                                0 -> navController.navigate(PageRoutes.Home.route)
+                                1 -> navController.navigate(PageRoutes.ArticleView.route)
+                                else -> navController.navigate(PageRoutes.AboutView.route)
+                            }
                         },
                         label = {
                             Text(text = item.title)
@@ -88,26 +102,26 @@ fun AquaGuardianRouter(){
     ){
         NavHost(
             navController = navController, startDestination =
-            when(isOpened) {
-                true -> AquaGuardianRoutes.WelcomeScreen.route
-                false -> AquaGuardianRoutes.Home.route
-            }
+            PageRoutes.Home.route
 
         ) {
-            composable(route = AquaGuardianRoutes.ViewTank.route) {
+            composable(route = PageRoutes.ViewTank.route) {
                 ViewTank(nav = navController)
             }
 
-            composable(route = AquaGuardianRoutes.WelcomeScreen.route) {
-                HomeView(nav = navController)
+            composable(route = PageRoutes.AboutView.route) {
+                AboutView(navController)
             }
 
-            composable(route = AquaGuardianRoutes.Home.route) {
-                HomeView(nav = navController)
+            composable(route = PageRoutes.ArticleView.route) {
+                ArticleView(navController)
+            }
+
+            composable(route = PageRoutes.Home.route) {
+                HomeView(navController)
             }
 
         }
     }
-
-
 }
+
