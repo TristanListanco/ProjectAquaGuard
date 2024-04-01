@@ -148,8 +148,7 @@ fun AppTheme(
 
     if (!view.isInEditMode) {
         SideEffect {
-
-            WindowCompat.getInsetsController((view.context as Activity).window, view).isAppearanceLightStatusBars = useDarkTheme
+            WindowCompat.getInsetsController((view.context as Activity).window, view).isAppearanceLightStatusBars = !useDarkTheme
             WindowCompat.setDecorFitsSystemWindows((view.context as Activity).window, false)
         }
     }
