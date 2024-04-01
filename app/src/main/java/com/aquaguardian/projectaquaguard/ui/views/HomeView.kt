@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -180,9 +179,8 @@ fun HomeView(nav: NavHostController) {
             fontWeight = FontWeight.Bold,
             fontFamily = productsans_family,
             modifier = Modifier.constrainAs(tankLabel) {
-                top.linkTo(overviewCard.top)
+                top.linkTo(overviewCard.bottom)
                 start.linkTo(parent.start)
-                end.linkTo(parent.end)
             }.padding(top = 16.dp, bottom = 16.dp))
 
     }
