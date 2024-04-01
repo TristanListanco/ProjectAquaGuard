@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.aquaguardian.projectaquaguard.R
+import com.aquaguardian.projectaquaguard.ui.components.DashboardTile
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
 
 @Composable
@@ -42,7 +43,7 @@ fun HomeView(nav: NavHostController) {
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = (32.dp + 16.dp))
             .verticalScroll(rememberScrollState())
     ) {
-        val (title, profileIcon, overviewCard, tankLabel) = createRefs()
+        val (title, profileIcon, overviewCard, tankLabel, cardContainer) = createRefs()
 
         Image(
             painter = painterResource(id = R.drawable.ic_dummy_acc),
@@ -178,10 +179,22 @@ fun HomeView(nav: NavHostController) {
             fontSize = 10.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = productsans_family,
-            modifier = Modifier.constrainAs(tankLabel) {
-                top.linkTo(overviewCard.bottom)
+            modifier = Modifier
+                .constrainAs(tankLabel) {
+                    top.linkTo(overviewCard.bottom)
+                    start.linkTo(parent.start)
+                }
+                .padding(top = 16.dp, bottom = 16.dp)
+        )
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight().constrainAs(cardContainer){
+                top.linkTo(tankLabel.bottom)
                 start.linkTo(parent.start)
-            }.padding(top = 16.dp, bottom = 16.dp))
-
+                end.linkTo(parent.end)
+            }) {
+            DashboardTile(titleText = "Tank #1", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.")
+            DashboardTile(titleText = "Tank #2", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.")
+        }
     }
 }
