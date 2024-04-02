@@ -16,5 +16,37 @@ We will collect personal identification information from Users only if they volu
 </string>
     <string name="authentication_screen_login_title">Login</string>
     <string name="authentication_screen_signup_title">Signup</string>
+    <string name="tank1_details_title">Unfiltered Water</string>
+    <string name="tank1_details_description">
+The water tank without filtration doesn\'t have any cleaning system, so it\'s not safe for regular use. It only keeps track of how much water is in the tank.</string>
+    <string name="tank2_details_title">Rapid Sand Filter</string>
+    <string name="tank2_details_description">This water tank consists of anthracite, silica sand that filters all of the impurities and heavy metals inside the water</string>
+    <string name="tank3_details_title">Activated Carbon Filter</string>
+    <string name="tank3_details_description">This water tank consists of activated carbon and energy beads that neutralizes pH levels in the water</string>
+    <string name="tank4_details_title">Filtered Water</string>
+    <string name="tank4_details_description">This water tank is being filtered and ready to use. It measures the water level and the water temperature</string>
+    
+    
+    <string name="ph_text">pH</string>
+    <string name="turbidityTSS_text">Total Soluble Solids</string>
+    <string name="tds_text">Total Dissolved Solids</string>
+    <string name="temp_text">Water Temperature</string>
+    <string name="waterLevel_text">Water Level</string>
+    
+    <string name="downloadCSV_button">Download as .CSV</string>
+
+
+    <string name="greetingDay">Good Morning</string>
+    <string name="greetingNoon">Good Noon</string>
+    <string name="greetingAfternoon">Good Afternoon</string>
+    <string name="greetingNight">Good Night</string>
+
+    <string name="tankOffline_text">Tank is offline! Please check the connection </string>
+    <string name="appOffline_text">You are offline! Cached Data will be only visible. Connect to the internet to fetch latest data</string>
+    <string name="fetchingData_text">Fetching latest data.....</string>
+
+
+    
+
 
 </resources>
