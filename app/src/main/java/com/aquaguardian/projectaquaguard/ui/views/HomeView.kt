@@ -186,15 +186,33 @@ fun HomeView(nav: NavHostController) {
                 }
                 .padding(top = 16.dp, bottom = 16.dp)
         )
-        Row(modifier = Modifier
+        Column(modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight().constrainAs(cardContainer){
+            .wrapContentHeight()
+            .constrainAs(cardContainer) {
                 top.linkTo(tankLabel.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }) {
-            DashboardTile(titleText = "Tank #1", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.")
-            DashboardTile(titleText = "Tank #2", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.")
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()) {
+                DashboardTile(titleText = "Tank #1", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.", modifier = Modifier.weight(1f).padding(8.dp))
+                DashboardTile(titleText = "Tank #2", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.", modifier = Modifier.weight(1f).padding(8.dp))
+            }
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()) {
+                DashboardTile(titleText = "Tank #3", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.", modifier = Modifier.weight(1f).padding(8.dp))
+                DashboardTile(titleText = "Tank #4", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.", modifier = Modifier.weight(1f).padding(8.dp))
+            }
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()) {
+                DashboardTile(titleText = "Tank #5", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.", modifier = Modifier.weight(1f).padding(8.dp))
+                DashboardTile(titleText = "Tank #6", subText = "Rapid Sand Filtered", icon = painterResource(id = R.drawable.waterdrop), cardStatus = "Updated 1 min ago.", modifier = Modifier.weight(1f).padding(8.dp))
+            }
+            Spacer(modifier = Modifier.height(150.dp))
         }
     }
 }
