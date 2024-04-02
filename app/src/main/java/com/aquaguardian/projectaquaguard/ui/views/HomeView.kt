@@ -139,7 +139,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                         fontWeight = FontWeight.Bold,
                         fontFamily = productsans_family,
                         fontSize = 36.sp,
-                        text = "31° C"
+                        text = "31°C"
                     )
                 }
                 Spacer(
@@ -157,7 +157,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                         fontWeight = FontWeight.Thin,
                         fontFamily = productsans_family,
                         fontSize = 12.sp,
-                        text = "42° C"
+                        text = "42°C"
                     )
                     Spacer(
                         modifier = Modifier
@@ -169,7 +169,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                         fontWeight = FontWeight.Thin,
                         fontFamily = productsans_family,
                         fontSize = 12.sp,
-                        text = "39° C"
+                        text = "39°C"
                     )
                 }
             }

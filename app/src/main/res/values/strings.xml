@@ -4,6 +4,7 @@
     <string name="welcome_screen_title1">Project</string>
     <string name="welcome_screen_title2">AquaGuard</string>
     <string name="welcome_screen_subtext">IoT Based App Monitoring System for AquaGuard Storage and Filtration System</string>
+    <string name="unescoEntry_text">An Official Entry for the UNESCO Water Resilience Challenge 2024: Road to Bali - 10th World Water Forum</string>
     <string name="welcome_screen_btn_label">Go To Dashboard</string>
     <string name="welcome_screen_sub_btn_label">View Privacy Policy</string>
     <string name="welcome_screen_dialog_privacy_policy_title">Privacy Policy</string>
@@ -14,6 +15,7 @@ Our IoT Monitoring Service may collect personally identifiable information from 
 We will collect personal identification information from Users only if they voluntarily submit such information to us. Users can always refuse to supply personally identification information, except that it may prevent them from engaging in certain Site related activities.
 
 </string>
+    <string name="browseArticles_text">Browse Articles</string>
     <string name="authentication_screen_login_title">Login</string>
     <string name="authentication_screen_signup_title">Signup</string>
     <string name="tank1_details_title">Unfiltered Water</string>

@@ -79,6 +79,14 @@ fun WelcomeScreen(navHostController: NavHostController) {
                 lineHeight = 32.sp,
                 modifier = Modifier.padding(top = 16.dp)
             )
+            Text(
+                text = stringResource(id = R.string.unescoEntry_text),
+                fontSize = 10.sp,
+                fontFamily = productsans_family,
+                fontWeight = FontWeight.Thin,
+                lineHeight = 20.sp,
+                modifier = Modifier.padding(top = 16.dp)
+            )
         }
 
 

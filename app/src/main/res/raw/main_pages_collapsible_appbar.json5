@@ -1,0 +1,33 @@
+{
+  ConstraintSets: {
+    start: {
+      title1: {
+        start: ['parent', 'start', 16],
+        top: ['parent', 'top', 16],
+        scaleX: 1.0,
+        scaleY: 1.0,
+      },
+      title2: {
+        start: ['title1', 'start', 16],
+        top: ['title1', 'bottom', 16],
+        scaleX: 1.0,
+        scaleY: 1.0
+      }
+    },
+    end:{
+      title1: {
+        start: ['parent', 'start', 16],
+        end: ['title2', 'start', 16],
+        scaleX: 0.5,
+        scaleY: 0.5
+      },
+      title2: {
+        start: ['title1', 'end', 0],
+        top: ['title1', 'top', 16],
+        scaleX: 0.5,
+        scaleY: 0.5
+      }
+    }
+  }
+}
+
