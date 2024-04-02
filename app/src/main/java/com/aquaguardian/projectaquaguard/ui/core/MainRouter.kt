@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aquaguardian.projectaquaguard.ui.views.AuthenticationView
 import com.aquaguardian.projectaquaguard.ui.views.MainAppView
+import com.aquaguardian.projectaquaguard.ui.views.ViewTank
 import com.aquaguardian.projectaquaguard.ui.views.WelcomeScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -59,6 +60,14 @@ fun AquaGuardianRouter() {
 
         composable(route = MainRoutes.MainNav.route) {
             MainAppView(navController)
+        }
+
+        composable(route ="${ MainRoutes.ViewTank.route}/{tankId}") {navBackStackEntry ->
+            val tankId = navBackStackEntry.arguments?.getString("tankId")
+            tankId?.let { tankId
+                ViewTank(navController, tankId)
+
+            }
         }
 
     }

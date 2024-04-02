@@ -4,4 +4,5 @@ sealed class MainRoutes(val route: String) {
     data object WelcomeScreen : MainRoutes("wscreen")
     data object MainNav : MainRoutes("main")
     data object AuthenticationView : MainRoutes("auth")
+    data object ViewTank: MainRoutes("view_tank")
 }

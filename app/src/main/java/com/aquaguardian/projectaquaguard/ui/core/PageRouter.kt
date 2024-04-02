@@ -105,10 +105,6 @@ fun PageRouter(mainNavController: NavHostController){
             PageRoutes.Home.route
 
         ) {
-            composable(route = PageRoutes.ViewTank.route) {
-                ViewTank(nav = navController)
-            }
-
             composable(route = PageRoutes.AboutView.route) {
                 AboutView(navController)
             }
@@ -118,7 +114,7 @@ fun PageRouter(mainNavController: NavHostController){
             }
 
             composable(route = PageRoutes.Home.route) {
-                HomeView(navController)
+                HomeView(navController, mainNavController)
             }
 
         }
