@@ -202,7 +202,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
             ) {
                 DashboardTile(
                     titleText = "Tank #1",
-                    subText = "Rapid Sand Filtered",
+                    subText = "Unfiltered Water",
                     icon = painterResource(id = R.drawable.waterdrop),
                     cardStatus = "Updated 1 min ago.",
                     modifier = Modifier
@@ -213,7 +213,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                     })
                 DashboardTile(
                     titleText = "Tank #2",
-                    subText = "Rapid Sand Filtered",
+                    subText = "Rapid Sand Filter",
                     icon = painterResource(id = R.drawable.waterdrop),
                     cardStatus = "Updated 1 min ago.",
                     modifier = Modifier
@@ -231,7 +231,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
             ) {
                 DashboardTile(
                     titleText = "Tank #3",
-                    subText = "Rapid Sand Filtered",
+                    subText = "Granulated Activated Carbon",
                     icon = painterResource(id = R.drawable.waterdrop),
                     cardStatus = "Updated 1 min ago.",
                     modifier = Modifier
@@ -243,7 +243,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                 )
                 DashboardTile(
                     titleText = "Tank #4",
-                    subText = "Rapid Sand Filtered",
+                    subText = "Filtered/Storage Water",
                     icon = painterResource(id = R.drawable.waterdrop),
                     cardStatus = "Updated 1 min ago.",
                     modifier = Modifier
@@ -259,30 +259,8 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                     .fillMaxWidth()
                     .wrapContentHeight()
             ) {
-                DashboardTile(
-                    titleText = "Tank #5",
-                    subText = "Rapid Sand Filtered",
-                    icon = painterResource(id = R.drawable.waterdrop),
-                    cardStatus = "Updated 1 min ago.",
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    onClick = {
-                        parentNav.navigate("${MainRoutes.ViewTank.route}/t5")
-                    }
-                )
-                DashboardTile(
-                    titleText = "Tank #6",
-                    subText = "Rapid Sand Filtered",
-                    icon = painterResource(id = R.drawable.waterdrop),
-                    cardStatus = "Updated 1 min ago.",
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    onClick = {
-                        parentNav.navigate("${MainRoutes.ViewTank.route}/t6")
-                    }
-                )
+
+
             }
             Spacer(modifier = Modifier.height(150.dp))
         }
