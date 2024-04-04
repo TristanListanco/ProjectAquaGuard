@@ -7,6 +7,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -72,18 +75,34 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
 
         val (backIcon, titleText, statusCard, label1, sensorsContainer, label2, graphContainer) = createRefs()
 
-        IconButton(onClick = {
-            nav.popBackStack()
-        }, modifier = Modifier
+        Row(modifier = Modifier
             .constrainAs(backIcon) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
             }
             .padding(start = 8.dp, top = 8.dp)) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                contentDescription = "Arrow Forward Icon"
-            )
+            IconButton(onClick = {
+                nav.popBackStack()
+            }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = "Arrow Forward Icon"
+                )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(end = 16.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = {
+                    nav.popBackStack()
+                }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Info,
+                        contentDescription = "Info Icon"
+                    )
+                }
+            }
         }
 
         Text(
@@ -247,15 +266,34 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .height(250.dp)
                 .padding(start = 16.dp, end = 16.dp)
-                .constrainAs(graphContainer){
+                .constrainAs(graphContainer) {
                     top.linkTo(label2.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
         ) {
-
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround
+                ) {
+                    Button(onClick = { /*TODO*/ }, contentPadding = PaddingValues(8.dp)) {
+                        Text(text = "View as Graph", fontSize = 12.sp)
+                    }
+                    Button(onClick = { /*TODO*/ }, contentPadding = PaddingValues(8.dp)) {
+                        Text(text = "View All", fontSize = 12.sp)
+                    }
+                }
+            }
         }
     }
 }
