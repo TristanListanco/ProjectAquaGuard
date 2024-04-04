@@ -81,7 +81,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     end.linkTo(parent.end)
                 },
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.8f)
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer
                     .compositeOver(
                         MaterialTheme.colorScheme.surface
                     ),
@@ -98,14 +98,14 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(100.dp)
-                        .background(MaterialTheme.colorScheme.onTertiaryContainer)
+                        .background(MaterialTheme.colorScheme.tertiary)
                 ) {
 
                 }
                 Column(modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.Bottom) {
                     Text(
                         text = "Water Tank Level",
-                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                        color = MaterialTheme.colorScheme.onTertiary,
                         fontWeight = FontWeight.Normal,
                         fontFamily = productsans_family,
                         fontSize = 20.sp,
@@ -113,7 +113,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     )
 
                     Text(
-                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                        color = MaterialTheme.colorScheme.onTertiary,
                         fontWeight = FontWeight.Bold,
                         fontFamily = productsans_family,
                         fontSize = 36.sp,
