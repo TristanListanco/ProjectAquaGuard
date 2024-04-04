@@ -77,8 +77,8 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 .padding(16.dp)
                 .constrainAs(statusCard) {
                     top.linkTo(titleText.bottom, 16.dp)
-                    start.linkTo(parent.start, 16.dp)
-                    end.linkTo(parent.end, 16.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 },
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.8f)
