@@ -105,7 +105,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 Column(modifier = Modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.Bottom) {
                     Text(
                         text = "Water Tank Level",
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
                         fontWeight = FontWeight.Normal,
                         fontFamily = productsans_family,
                         fontSize = 20.sp,
@@ -113,7 +113,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     )
 
                     Text(
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
                         fontWeight = FontWeight.Bold,
                         fontFamily = productsans_family,
                         fontSize = 36.sp,
