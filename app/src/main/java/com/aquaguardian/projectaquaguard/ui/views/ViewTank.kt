@@ -57,7 +57,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             .fillMaxSize()
             .statusBarsPadding()
             .verticalScroll(scrollState)
-            .padding(top = 16.dp, start = 32.dp, end = 32.dp, bottom = 32.dp)
+            .padding(top = 32.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
     ) {
 
         val (titleText, statusCard) = createRefs()
