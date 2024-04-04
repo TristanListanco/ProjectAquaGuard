@@ -139,9 +139,6 @@ fun PageRouter(mainNavController: NavHostController) {
             .fillMaxWidth()
             .fillMaxHeight()
         ) {
-            Slider(value = 0f, onValueChange = {
-                maxScroll.floatValue = it
-            })
             NavHost(
                 navController = navController,
                 startDestination =

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -52,7 +53,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         val (titleText, statusCard) = createRefs()
 
         Text(
-            fontSize = 36.sp,
+            fontSize = 50.sp,
             fontFamily = productsans_family,
             fontWeight = FontWeight.Normal,
             text = when (tankId) {
@@ -73,8 +74,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
-                .padding(16.dp)
+                .wrapContentHeight()
                 .constrainAs(statusCard) {
                     top.linkTo(titleText.bottom, 16.dp)
                     start.linkTo(parent.start)
@@ -109,7 +109,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                         fontWeight = FontWeight.Normal,
                         fontFamily = productsans_family,
                         fontSize = 20.sp,
-                        modifier = Modifier.fillMaxWidth(1f).padding(16.dp),
+                        modifier = Modifier.fillMaxWidth(1f).padding(8.dp),
                     )
 
                     Text(
@@ -118,7 +118,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                         fontFamily = productsans_family,
                         fontSize = 36.sp,
                         text = "80%",
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(8.dp)
                     )
                 }
             }
