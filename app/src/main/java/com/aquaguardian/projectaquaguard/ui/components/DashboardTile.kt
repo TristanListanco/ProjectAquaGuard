@@ -69,7 +69,7 @@ fun DashboardTile(
                 fontFamily = productsans_family,
                 fontSize = 14.sp,
                 maxLines = 1,
-                modifier = Modifier.basicMarquee()
+//                modifier = Modifier.basicMarquee()
             )
         }
         Spacer(
