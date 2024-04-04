@@ -156,7 +156,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         fontWeight = FontWeight.Thin,
                         fontFamily = productsans_family,
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         text = "42°C"
                     )
                     Spacer(
@@ -168,7 +168,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                         color = MaterialTheme.colorScheme.onTertiaryContainer,
                         fontWeight = FontWeight.Thin,
                         fontFamily = productsans_family,
-                        fontSize = 12.sp,
+                        fontSize = 14.sp,
                         text = "39°C"
                     )
                 }
@@ -177,7 +177,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
 
         Text(
             text = "TANK STATUS",
-            fontSize = 10.sp,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             fontFamily = productsans_family,
             modifier = Modifier
@@ -207,7 +207,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                     cardStatus = "Updated 1 min ago.",
                     modifier = Modifier
                         .weight(1f)
-                        .padding(8.dp),
+                        .padding(end = 16.dp),
                     onClick = {
                         parentNav.navigate("${MainRoutes.ViewTank.route}/t1")
                     })
@@ -217,8 +217,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                     icon = painterResource(id = R.drawable.waterdrop),
                     cardStatus = "Updated 1 min ago.",
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
+                        .weight(1f),
                     onClick = {
                         parentNav.navigate("${MainRoutes.ViewTank.route}/t2")
                     }
@@ -236,7 +235,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                     cardStatus = "Updated 1 min ago.",
                     modifier = Modifier
                         .weight(1f)
-                        .padding(8.dp),
+                        .padding(end = 16.dp, top = 16.dp),
                     onClick = {
                         parentNav.navigate("${MainRoutes.ViewTank.route}/t3")
                     }
@@ -248,7 +247,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                     cardStatus = "Updated 1 min ago.",
                     modifier = Modifier
                         .weight(1f)
-                        .padding(8.dp),
+                        .padding(top = 16.dp),
                     onClick = {
                         parentNav.navigate("${MainRoutes.ViewTank.route}/t4")
                     }

@@ -1,6 +1,7 @@
 package com.aquaguardian.projectaquaguard.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -67,6 +68,8 @@ fun DashboardTile(
                 fontWeight = FontWeight.Normal,
                 fontFamily = productsans_family,
                 fontSize = 14.sp,
+                maxLines = 1,
+                modifier = Modifier.basicMarquee()
             )
         }
         Spacer(
