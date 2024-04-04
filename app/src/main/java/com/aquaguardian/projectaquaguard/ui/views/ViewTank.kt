@@ -98,6 +98,8 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 "t2" -> "Tank 2"
                 "t3" -> "Tank 3"
                 "t4" -> "Tank 4"
+                "t5" -> "Tank 5"
+                "t6" -> "Tank 6"
                 null -> "NULL!"
                 else -> "??"
             },
@@ -197,13 +199,13 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     top.linkTo(label1.bottom)
                 }) {
             SensorCard(
-                sensorType = "pH", sensorValue = "7.5", cardStatus = "Updated - Just Now",
+                sensorType = "pH Value", sensorValue = "7.5", cardStatus = "Updated - Just Now",
                 icon =
                 painterResource(id = R.drawable.waterdrop),
                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
             )
             SensorCard(
-                sensorType = "Turbidity / TSS", sensorValue = "7.5", cardStatus = "Updated - Just Now",
+                sensorType = "Turbidity", sensorValue = "7.5", cardStatus = "Updated - Just Now",
                 icon =
                 painterResource(id = R.drawable.waterdrop),
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
