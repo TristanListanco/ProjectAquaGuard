@@ -1,6 +1,7 @@
 package com.aquaguardian.projectaquaguard.ui.views
 
 import android.widget.Toast
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,9 +17,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.compositeOver
@@ -32,10 +38,14 @@ import com.aquaguardian.projectaquaguard.ui.core.MainRoutes
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewTank(nav: NavHostController, tankId: String? = null) {
     val ctx = LocalContext.current
     val scrollState = rememberScrollState()
+
+    var expanded by remember { mutableStateOf(true) }
+    val height = animateDpAsState(if (expanded) 100.dp else 0.dp, label = "Transition")
 
     if (tankId == null) {
         nav.navigate(MainRoutes.MainNav.route)
@@ -86,8 +96,12 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                         MaterialTheme.colorScheme.surface
                     ),
                 contentColor = MaterialTheme.colorScheme.tertiaryContainer
-            )
+            ),
+            onClick = {
+                expanded = !expanded
+            }
         ) {
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -97,7 +111,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(100.dp)
+                        .height(height.value)
                         .background(MaterialTheme.colorScheme.tertiary)
                 ) {
 
