@@ -17,6 +17,7 @@ lifecycleLivedata = "2.8.0-alpha03"
 runtimeLivedata = "1.7.0-alpha05"
 constraintlayoutCompose = "1.1.0-alpha13"
 toolbarCompose = "2.3.5"
+vico = "2.0.0-alpha.14"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +43,8 @@ androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 toolbar-compose = { group = "me.onebone", name = "toolbar-compose", version.ref = "toolbarCompose" }
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

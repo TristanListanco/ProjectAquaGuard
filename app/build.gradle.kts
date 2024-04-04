@@ -83,4 +83,6 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.github.Breens-Mbaka:BeeTablesCompose:1.0.5")
+    implementation(libs.vico.compose.m3)
 }

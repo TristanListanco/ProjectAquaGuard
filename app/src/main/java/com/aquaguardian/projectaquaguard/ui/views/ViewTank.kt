@@ -231,5 +231,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 modifier = Modifier.padding(start = 8.dp, end = 16.dp)
             )
         }
+        Card(modifier = Modifier
+            .fillMaxWidth()
+            .height(150.dp)) {
+
+        }
     }
 }
