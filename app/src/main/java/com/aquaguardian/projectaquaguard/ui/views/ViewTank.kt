@@ -1,6 +1,5 @@
 package com.aquaguardian.projectaquaguard.ui.views
 
-import android.graphics.drawable.Icon
 import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -20,8 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -73,7 +70,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             .padding(bottom = 16.dp)
     ) {
 
-        val (backIcon, titleText, statusCard, label1, sensorsContainer) = createRefs()
+        val (backIcon, titleText, statusCard, label1, sensorsContainer, label2, graphContainer) = createRefs()
 
         IconButton(onClick = {
             nav.popBackStack()
@@ -203,7 +200,9 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
             )
             SensorCard(
-                sensorType = "Turbidity / TSS", sensorValue = "7.5", cardStatus = "Updated - Just Now",
+                sensorType = "Turbidity / TSS",
+                sensorValue = "7.5",
+                cardStatus = "Updated - Just Now",
                 icon =
                 painterResource(id = R.drawable.waterdrop),
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
@@ -231,9 +230,31 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 modifier = Modifier.padding(start = 8.dp, end = 16.dp)
             )
         }
-        Card(modifier = Modifier
-            .fillMaxWidth()
-            .height(150.dp)) {
+
+        Text(
+            text = "VISUALIZED DATA",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            fontFamily = productsans_family,
+            modifier = Modifier
+                .constrainAs(label2) {
+                    top.linkTo(sensorsContainer.bottom)
+                    start.linkTo(parent.start)
+                }
+                .padding(top = 32.dp, bottom = 16.dp, start = 16.dp)
+        )
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(150.dp)
+                .padding(start = 16.dp, end = 16.dp)
+                .constrainAs(graphContainer){
+                    top.linkTo(label2.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+        ) {
 
         }
     }
