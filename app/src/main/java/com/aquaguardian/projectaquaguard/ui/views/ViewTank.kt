@@ -293,6 +293,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                         Text(text = "View All", fontSize = 12.sp)
                     }
                 }
+                
             }
         }
     }

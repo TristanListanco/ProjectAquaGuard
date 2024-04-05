@@ -24,7 +24,7 @@ import com.aquaguardian.projectaquaguard.R
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
 
 @Composable
-fun ArticleView(navHostController: NavHostController){
+fun ArticleView(navHostController: NavHostController) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -32,7 +32,7 @@ fun ArticleView(navHostController: NavHostController){
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = (32.dp + 16.dp))
             .verticalScroll(rememberScrollState())
     ) {
-        val (title,info) = createRefs()
+        val (title, info, articlesContainer) = createRefs()
 
         Image(
             painter = painterResource(id = R.drawable.ic_info),
@@ -68,8 +68,19 @@ fun ArticleView(navHostController: NavHostController){
                 fontWeight = FontWeight.Normal,
                 text = "Articles"
             )
+        }
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .constrainAs(articlesContainer){
+                top.linkTo(title.bottom, 16.dp)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }
+        ) {
 
         }
+
 
     }
 }
