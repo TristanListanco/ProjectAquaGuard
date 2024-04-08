@@ -36,15 +36,15 @@ fun SensorCard(
                     onClick()
                 }
             },
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-        ),
+//        colors = CardDefaults.cardColors(
+//            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+//            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+//        ),
     ) {
         Column(Modifier.fillMaxSize().padding(16.dp)) {
             Text(
             text = sensorType,
-            color = MaterialTheme.colorScheme.onTertiaryContainer,
+            color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Normal,
             fontFamily = productsans_family,
             fontSize = 14.sp,
@@ -52,7 +52,7 @@ fun SensorCard(
 //                modifier = Modifier.basicMarquee()
         )
             Text(
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
                 fontFamily = productsans_family,
                 fontSize = 40.sp,

@@ -44,10 +44,10 @@ fun ArticleCard(
                 startActivity(context, intent, null)
             }
             .padding(bottom = 8.dp, top = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-        )
+//        colors = CardDefaults.cardColors(
+//            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+//            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+//        )
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -68,7 +68,7 @@ fun ArticleCard(
         ) {
             Text(
                 text = headlines,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Normal,
                 fontFamily = productsans_family,
                 fontSize = 16.sp,

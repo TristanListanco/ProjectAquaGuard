@@ -2,6 +2,7 @@ package com.aquaguardian.projectaquaguard.ui.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,10 +33,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.aquaguardian.projectaquaguard.R
+import com.aquaguardian.projectaquaguard.ui.components.TeamCard
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
 
 @Composable
 fun AboutView(navHostController: NavHostController) {
+    val teamCardsScroll = rememberScrollState()
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -43,7 +46,7 @@ fun AboutView(navHostController: NavHostController) {
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = (32.dp + 16.dp + 40.dp))
             .verticalScroll(rememberScrollState())
     ) {
-        val (title, topCardContainer, label1, teamContainer) = createRefs()
+        val (title, topCardContainer, singleCard, label1, teamContainer) = createRefs()
 
         Column(
             modifier = Modifier
@@ -75,7 +78,7 @@ fun AboutView(navHostController: NavHostController) {
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .padding(8.dp),
+                    .padding(end = 8.dp),
             ) {
                 Column(
                     modifier = Modifier
@@ -95,7 +98,7 @@ fun AboutView(navHostController: NavHostController) {
                     )
                     Text(
                         text = "AquaGuardian",
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Bold,
                         fontFamily = productsans_family,
                         fontSize = 20.sp
@@ -105,7 +108,7 @@ fun AboutView(navHostController: NavHostController) {
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         fontFamily = productsans_family,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
@@ -113,7 +116,7 @@ fun AboutView(navHostController: NavHostController) {
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .padding(8.dp),
+                    .padding(start = 8.dp),
             ) {
                 Column(
                     modifier = Modifier
@@ -135,12 +138,49 @@ fun AboutView(navHostController: NavHostController) {
                     )
                     Text(
                         text = "UNESCO",
-                        color = MaterialTheme.colorScheme.primary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Bold,
                         fontFamily = productsans_family,
                         fontSize = 20.sp
                     )
                 }
+            }
+        }
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .constrainAs(singleCard){
+                    top.linkTo(topCardContainer.bottom, 16.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(80.dp)
+                        .padding(end = 16.dp)
+                        .aspectRatio(1f / 1f)
+                        .clip(CircleShape),
+                    painter = painterResource(id = R.drawable.twa_logo),
+                    contentDescription = "The Water Agency Logo",
+                    contentScale = ContentScale.Crop
+                )
+                Text(
+                    text = "The Water Agency",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = productsans_family,
+                    fontSize = 20.sp
+                )
             }
         }
         Text(
@@ -150,7 +190,7 @@ fun AboutView(navHostController: NavHostController) {
             fontFamily = productsans_family,
             modifier = Modifier
                 .constrainAs(label1) {
-                    top.linkTo(topCardContainer.bottom)
+                    top.linkTo(singleCard.bottom)
                     start.linkTo(parent.start)
                 }
                 .padding(top = 16.dp, bottom = 16.dp)
@@ -160,10 +200,35 @@ fun AboutView(navHostController: NavHostController) {
             .fillMaxWidth()
             .wrapContentHeight()
             .constrainAs(teamContainer) {
-                top.linkTo(label1.bottom, 16.dp)
+                top.linkTo(label1.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-            }) {
+            }
+            .horizontalScroll(teamCardsScroll)) {
+            TeamCard(
+                teamName = "Listanco T.",
+                teamAvatar = painterResource(id = R.drawable.listanco),
+                teamContactLink = arrayOf(
+                    Pair("facebook", "https://www.facebook.com/TreeStanee")
+                ),
+                modifier = Modifier.padding(end = 8.dp)
+            )
+            TeamCard(
+                teamName = "Fajardo P.",
+                teamAvatar = painterResource(id = R.drawable.fajardo),
+                teamContactLink = arrayOf(
+                    Pair("facebook", "https://www.facebook.com/princess.fajardo.549")
+                ),
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+            )
+            TeamCard(
+                teamName = "Pondang I.",
+                teamAvatar = painterResource(id = R.drawable.isha),
+                teamContactLink = arrayOf(
+                    Pair("facebook", "https://facebook.com")
+                ),
+                modifier = Modifier.padding(start = 8.dp)
+            )
 
         }
 

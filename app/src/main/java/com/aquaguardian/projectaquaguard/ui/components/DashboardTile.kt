@@ -44,10 +44,10 @@ fun DashboardTile(
                 onClick()
             }
         },
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-        ),
+//        colors = CardDefaults.cardColors(
+//            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+//            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+//        ),
     ) {
         Column(
             modifier = Modifier
@@ -56,7 +56,7 @@ fun DashboardTile(
                 .padding(16.dp)
         ) {
             Text(
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
                 fontFamily = productsans_family,
                 fontSize = 28.sp,
@@ -64,7 +64,7 @@ fun DashboardTile(
             )
             Text(
                 text = subText,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Normal,
                 fontFamily = productsans_family,
                 fontSize = 14.sp,
