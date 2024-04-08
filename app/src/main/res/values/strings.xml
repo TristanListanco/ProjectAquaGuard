@@ -32,8 +32,9 @@ The water tank without filtration doesn\'t have any cleaning system, so it\'s no
     <string name="ph_text">pH</string>
     <string name="turbidityTSS_text">Total Soluble Solids</string>
     <string name="tds_text">Total Dissolved Solids</string>
+    <string name="total_soluble_text">Total Soluble</string>
     <string name="temp_text">Water Temperature</string>
-    <string name="waterLevel_text">Water Level</string>
+    <string name="waterLevel_text">Water Tank Level</string>
     
     <string name="downloadCSV_button">Download as .CSV</string>
 
@@ -47,8 +48,7 @@ The water tank without filtration doesn\'t have any cleaning system, so it\'s no
     <string name="appOffline_text">You are offline! Cached Data will be only visible. Connect to the internet to fetch latest data</string>
     <string name="fetchingData_text">Fetching latest data.....</string>
 
-
-    
-
+    <string name="view_tank_about_dialog_title">About Tank</string>
+    <string name="view_tank_about_dialog_message">Edit your message here</string>
 
 </resources>

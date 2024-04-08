@@ -21,15 +21,17 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,9 +53,17 @@ import com.aquaguardian.projectaquaguard.ui.core.MainRoutes
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewTank(nav: NavHostController, tankId: String? = null) {
+
+    val openAboutTankDialog = remember { mutableStateOf(false) }
+
+    when {
+        openAboutTankDialog.value -> {
+            AboutTankDialog(openAboutTankDialog, tankId)
+        }
+    }
+
     val ctx = LocalContext.current
     val scrollState = rememberScrollState()
     val sensorCardGroupScroll = rememberScrollState()
@@ -90,12 +101,14 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 )
             }
             Row(
-                modifier = Modifier.fillMaxWidth().padding(end = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 16.dp),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = {
-                    nav.popBackStack()
+                    openAboutTankDialog.value = !openAboutTankDialog.value
                 }) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
@@ -167,7 +180,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     verticalArrangement = Arrangement.Bottom
                 ) {
                     Text(
-                        text = "Water Tank Level",
+                        text = stringResource(id = R.string.waterLevel_text),
                         color = MaterialTheme.colorScheme.onTertiary,
                         fontWeight = FontWeight.Normal,
                         fontFamily = productsans_family,
@@ -213,13 +226,13 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     top.linkTo(label1.bottom)
                 }) {
             SensorCard(
-                sensorType = "pH", sensorValue = "7.5", cardStatus = "Updated - Just Now",
+                sensorType = stringResource(id = R.string.ph_text), sensorValue = "7.5", cardStatus = "Updated - Just Now",
                 icon =
                 painterResource(id = R.drawable.waterdrop),
                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
             )
             SensorCard(
-                sensorType = "Turbidity / TSS",
+                sensorType = stringResource(id = R.string.turbidityTSS_text),
                 sensorValue = "7.5",
                 cardStatus = "Updated - Just Now",
                 icon =
@@ -227,7 +240,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             )
             SensorCard(
-                sensorType = "Total Dissolved",
+                sensorType = stringResource(id = R.string.tds_text),
                 sensorValue = "7.5",
                 cardStatus = "Updated - Just Now",
                 icon =
@@ -235,7 +248,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             )
             SensorCard(
-                sensorType = "Total Soluble",
+                sensorType = stringResource(id = R.string.total_soluble_text),
                 sensorValue = "7.5",
                 cardStatus = "Updated - Just Now",
                 icon =
@@ -243,7 +256,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             )
             SensorCard(
-                sensorType = "Temperature", sensorValue = "7.5", cardStatus = "Updated - Just Now",
+                sensorType = stringResource(id = R.string.temp_text), sensorValue = "7.5", cardStatus = "Updated - Just Now",
                 icon =
                 painterResource(id = R.drawable.waterdrop),
                 modifier = Modifier.padding(start = 8.dp, end = 16.dp)
@@ -297,4 +310,43 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             }
         }
     }
+}
+
+@Composable
+fun AboutTankDialog(openAboutTankDialog: MutableState<Boolean>, tankId: String?) {
+    AlertDialog(onDismissRequest = { }, confirmButton = {
+        TextButton(onClick = {
+            openAboutTankDialog.value = !openAboutTankDialog.value
+        }) {
+            Text(
+                text = "Got It!", color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }, title = {
+        Text(
+            text = when (tankId) {
+                "t1" -> stringResource(id = R.string.tank1_details_title)
+                "t2" -> stringResource(id = R.string.tank2_details_title)
+                "t3" -> stringResource(id = R.string.tank3_details_title)
+                "t4" -> stringResource(id = R.string.tank4_details_title)
+                else -> "NULL"
+            },
+            fontFamily = productsans_family,
+            fontWeight = FontWeight.Normal
+        )
+    }, text = {
+        Text(
+            text = when (tankId) {
+                "t1" -> stringResource(id = R.string.tank1_details_description)
+                "t2" -> stringResource(id = R.string.tank2_details_description)
+                "t3" -> stringResource(id = R.string.tank3_details_description)
+                "t4" -> stringResource(id = R.string.tank4_details_description)
+                else -> "NULL"
+            },
+            fontFamily = productsans_family,
+            fontWeight = FontWeight.Normal,
+        )
+    }, icon = {
+        Icon(imageVector = Icons.Outlined.Info, contentDescription = "About Tank Info Icon")
+    })
 }
