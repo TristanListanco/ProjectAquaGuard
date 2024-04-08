@@ -33,6 +33,7 @@ import com.aquaguardian.projectaquaguard.R
 import com.aquaguardian.projectaquaguard.ui.components.DashboardTile
 import com.aquaguardian.projectaquaguard.ui.core.MainRoutes
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
+import java.util.Calendar
 
 @Composable
 fun HomeView(nav: NavHostController, parentNav: NavHostController) {
@@ -79,7 +80,7 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
                 fontSize = 50.sp,
                 fontFamily = productsans_family,
                 fontWeight = FontWeight.Normal,
-                text = "Morning!"
+                text = getTimeOfDay()
             )
         }
 
@@ -264,4 +265,20 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController) {
             Spacer(modifier = Modifier.height(150.dp))
         }
     }
+}
+
+@Composable
+fun getTimeOfDay(): String {
+    val calendar = Calendar.getInstance()
+    val timeOfDay: String
+
+    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+
+    timeOfDay = when (hour) {
+        in 0..11 -> "Morning"
+        in 12..15 -> "Afternoon"
+        else -> "Evening"
+    }
+
+    return timeOfDay
 }
