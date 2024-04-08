@@ -86,4 +86,5 @@ dependencies {
     implementation("com.github.Breens-Mbaka:BeeTablesCompose:1.0.5")
     implementation ("io.coil-kt:coil-compose:2.6.0")
     implementation(libs.vico.compose.m3)
+
 }
