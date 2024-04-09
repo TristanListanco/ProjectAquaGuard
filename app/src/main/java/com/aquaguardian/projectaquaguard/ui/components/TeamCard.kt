@@ -32,16 +32,17 @@ fun TeamCard(
     teamName: String,
     teamAvatar: Painter,
     teamContactLink: Array<Pair<String, String>>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     Card(modifier = modifier
         .width(100.dp)
         .height(100.dp)
         .clickable {
-            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
-            intent.data = android.net.Uri.parse(teamContactLink[0].second)
-            ContextCompat.startActivity(context, intent, null)
+            if (onClick != null) {
+                onClick()
+            }
         }) {
         Column(
             modifier = Modifier
