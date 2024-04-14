@@ -63,27 +63,29 @@ fun requestLocationAddress(
 
                         // We check if Device SDK Version is lower than Android 13
                         // getFromLocation() function is deprecated in Android 13 and above
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+//                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+//
+//
+//                        }
 
-                            val addresses = geocoder.getFromLocation(loc.latitude, loc.longitude, 1)
-                            // We check if the address we got from android.location.Geocoder is not null
-                            if (addresses != null) {
-                                // We then check if the addresses is not empty
-                                if (addresses.isNotEmpty()) {
-                                    // Checks have passed. We now call the callback function onLocated()
-                                    onLocated(addresses.first())
+                        val addresses = geocoder.getFromLocation(loc.latitude, loc.longitude, 1)
+                        // We check if the address we got from android.location.Geocoder is not null
+                        if (addresses != null) {
+                            // We then check if the addresses is not empty
+                            if (addresses.isNotEmpty()) {
+                                // Checks have passed. We now call the callback function onLocated()
+                                onLocated(addresses.first())
 
-                                } else {
-                                    // Return an Error
-                                    if (onError != null) {
-                                        onError("Retrieved data from android.location.Geocoder returned 0 addresses. WeatherService Aborted.")
-                                    }
-                                }
                             } else {
                                 // Return an Error
                                 if (onError != null) {
-                                    onError("Retrieved data from android.location.Geocoder returned null. Maybe try turning on/off Location or GPS Service?")
+                                    onError("Retrieved data from android.location.Geocoder returned 0 addresses. WeatherService Aborted.")
                                 }
+                            }
+                        } else {
+                            // Return an Error
+                            if (onError != null) {
+                                onError("Retrieved data from android.location.Geocoder returned null. Maybe try turning on/off Location or GPS Service?")
                             }
                         }
                     }
