@@ -6,11 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.aquaguardian.projectaquaguard.core.vms.MainVMService
 import com.aquaguardian.projectaquaguard.ui.core.PageRouter
 
 @Composable
-fun MainAppView(mainNavController: NavHostController){
+fun MainAppView(mainNavController: NavHostController, mainVMService: MainVMService){
     Row(modifier = Modifier.fillMaxSize()) {
-        PageRouter(mainNavController)
+        PageRouter(mainNavController, mainVMService)
     }
 }

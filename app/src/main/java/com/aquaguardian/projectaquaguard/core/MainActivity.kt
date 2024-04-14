@@ -11,6 +11,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.aquaguardian.projectaquaguard.core.vms.MainVMService
 import com.aquaguardian.projectaquaguard.ui.core.AquaGuardianRouter
 data class BottomNavigationItem(
     val title:String,
@@ -25,13 +27,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
+
         setContent {
+            val mainVMService: MainVMService = viewModel()
             AppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background) {
 
-                    AquaGuardianRouter()
+                    AquaGuardianRouter(mainVMService)
 
                 }
             }

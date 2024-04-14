@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.aquaguardian.projectaquaguard.core.vms.MainVMService
 import com.aquaguardian.projectaquaguard.ui.views.AuthenticationView
 import com.aquaguardian.projectaquaguard.ui.views.MainAppView
 import com.aquaguardian.projectaquaguard.ui.views.ViewTank
@@ -28,7 +29,7 @@ fun observeAuthenticationState(): MutableLiveData<Boolean> {
  */
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AquaGuardianRouter() {
+fun AquaGuardianRouter(mainVMService: MainVMService) {
     val navController = rememberNavController()
     val isAuthenticated = MutableLiveData<Boolean>()
     NavHost(
@@ -59,7 +60,7 @@ fun AquaGuardianRouter() {
         }
 
         composable(route = MainRoutes.MainNav.route) {
-            MainAppView(navController)
+            MainAppView(navController, mainVMService)
         }
 
         composable(route ="${ MainRoutes.ViewTank.route}/{tankId}") {navBackStackEntry ->

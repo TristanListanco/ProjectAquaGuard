@@ -75,16 +75,26 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.github.Breens-Mbaka:BeeTablesCompose:1.0.5")
-    implementation ("io.coil-kt:coil-compose:2.6.0")
+    implementation(libs.beetablescompose)
+    implementation (libs.coil.compose)
     implementation(libs.vico.compose.m3)
 
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson) // For Gson converter
+    implementation (libs.gson) // Gson library
+    implementation(libs.logging.interceptor)
+
+    implementation (libs.accompanist.permissions)
+    implementation (libs.play.services.location)
+
+    implementation (libs.accompanist.swiperefresh)
 }

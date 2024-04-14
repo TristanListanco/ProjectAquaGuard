@@ -31,6 +31,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.aquaguardian.projectaquaguard.core.BottomNavigationItem
+import com.aquaguardian.projectaquaguard.core.vms.MainVMService
 import com.aquaguardian.projectaquaguard.ui.views.AboutView
 import com.aquaguardian.projectaquaguard.ui.views.ArticleView
 import com.aquaguardian.projectaquaguard.ui.views.HomeView
@@ -44,7 +45,7 @@ const val isOpened: Boolean = false
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun PageRouter(mainNavController: NavHostController) {
+fun PageRouter(mainNavController: NavHostController, mainVMService: MainVMService) {
     val navController = rememberNavController()
 
     val items = listOf(
@@ -156,7 +157,7 @@ fun PageRouter(mainNavController: NavHostController) {
                 }
 
                 composable(route = PageRoutes.Home.route) {
-                    HomeView(navController, mainNavController)
+                    HomeView(navController, mainNavController, mainVMService)
                 }
 
             }
