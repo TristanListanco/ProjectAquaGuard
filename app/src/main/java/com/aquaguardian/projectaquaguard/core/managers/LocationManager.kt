@@ -6,7 +6,6 @@ import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.location.LocationManager
-import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -103,8 +102,12 @@ fun requestLocationAddress(
             }
 
         } else {
-            if (onError != null) {
-                onError("NO_PERMISSION")
+            if(autoRequestPermission) {
+                locationPermissionState.launchPermissionRequest()
+            } else {
+                if (onError != null) {
+                    onError("NO_PERMISSION")
+                }
             }
         }
     }
