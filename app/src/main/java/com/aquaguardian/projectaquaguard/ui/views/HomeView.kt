@@ -175,36 +175,6 @@ fun HomeView(nav: NavHostController, parentNav: NavHostController, mainVMService
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
-                    DashboardTile(
-                        titleText = "Tank #3",
-                        subText = "Granulated Activated Carbon",
-                        icon = painterResource(id = R.drawable.waterdrop),
-                        cardStatus = "Updated 1 min ago.",
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(end = 16.dp, top = 16.dp),
-                        onClick = {
-                            parentNav.navigate("${MainRoutes.ViewTank.route}/t3")
-                        }
-                    )
-                    DashboardTile(
-                        titleText = "Tank #4",
-                        subText = "Filtered/Storage Water",
-                        icon = painterResource(id = R.drawable.waterdrop),
-                        cardStatus = "Updated 1 min ago.",
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(top = 16.dp),
-                        onClick = {
-                            parentNav.navigate("${MainRoutes.ViewTank.route}/t4")
-                        }
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                ) {
 
 
                 }
