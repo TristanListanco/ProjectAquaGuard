@@ -389,7 +389,7 @@ fun reloadWeatherData(viewModel: MainVMService, weatherData: WeatherResponse?, f
 
                 viewModel.fetchWeatherData(
                     WEATHER_API_AUTH_KEY,
-                    "Puerto Princessa Palawan"
+                    "Puerto Princesa Palawan"
                 )
 //            }
        // } else {
