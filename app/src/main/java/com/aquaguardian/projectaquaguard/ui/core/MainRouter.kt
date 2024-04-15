@@ -12,6 +12,7 @@ import com.aquaguardian.projectaquaguard.ui.views.AuthenticationView
 import com.aquaguardian.projectaquaguard.ui.views.MainAppView
 import com.aquaguardian.projectaquaguard.ui.views.ViewTank
 import com.aquaguardian.projectaquaguard.ui.views.WelcomeScreen
+import com.aquaguardian.projectaquaguard.ui.views.debug.DataDebugger
 import com.google.firebase.auth.FirebaseAuth
 
 fun observeAuthenticationState(): MutableLiveData<Boolean> {
@@ -61,6 +62,10 @@ fun AquaGuardianRouter(mainVMService: MainVMService) {
 
         composable(route = MainRoutes.MainNav.route) {
             MainAppView(navController, mainVMService)
+        }
+
+        composable(route = MainRoutes.DataDebugger.route) {
+            DataDebugger(navController, mainVMService)
         }
 
         composable(route ="${ MainRoutes.ViewTank.route}/{tankId}") {navBackStackEntry ->

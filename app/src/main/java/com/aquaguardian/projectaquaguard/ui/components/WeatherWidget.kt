@@ -363,40 +363,42 @@ fun WeatherWidget(
 @SuppressLint("ComposableNaming")
 @Composable
 fun reloadWeatherData(viewModel: MainVMService, weatherData: WeatherResponse?, forcedRefresh: Boolean = false) {
-    requestLocationAddress(
-        autoRequestPermission = true,
-        onLocated = {
+//    requestLocationAddress(
+//        autoRequestPermission = true,
+//        onLocated = {
+//
+//
+//        },
+//        onError = {
+//            viewModel.writeWeatherServiceError("$it")
+//            viewModel.updateWeatherServiceLoading(false)
+//        },
+//    )
 
-            if (weatherData == null || forcedRefresh) {
+    if (weatherData == null || forcedRefresh) {
 
-                if (it != null) {
+        // if (it != null) {
 
-                    val baranggay = it.subLocality ?: ""
-                    val city = it.locality ?: ""
-                    if (baranggay == "" && city == "") {
+//            val baranggay = it.subLocality ?: ""
+//            val city = it.locality ?: ""
+           // if (baranggay == "" && city == "") {
 
-                        viewModel.writeWeatherServiceError("Address generated from class android.location.Geocoder didn't have the required data. Try to enable Location GPS and set App Permission to access Precise Location")
-                        viewModel.updateWeatherServiceLoading(false)
-                    } else {
+//                viewModel.writeWeatherServiceError("Address generated from class android.location.Geocoder didn't have the required data. Try to enable Location GPS and set App Permission to access Precise Location")
+//                viewModel.updateWeatherServiceLoading(false)
+            //} else {
 
-                        viewModel.fetchWeatherData(
-                            WEATHER_API_AUTH_KEY,
-                            "$baranggay $city"
-                        )
-                    }
-                } else {
-
-                    viewModel.writeWeatherServiceError("LOCATION_NOT_AVAILABLE")
-                    viewModel.updateWeatherServiceLoading(false)
-
-                }
-            }
-        },
-        onError = {
-            viewModel.writeWeatherServiceError("$it")
-            viewModel.updateWeatherServiceLoading(false)
-        },
-    )
+                viewModel.fetchWeatherData(
+                    WEATHER_API_AUTH_KEY,
+                    "Puerto Princessa Palawan"
+                )
+//            }
+       // } else {
+//
+//            viewModel.writeWeatherServiceError("LOCATION_NOT_AVAILABLE")
+//            viewModel.updateWeatherServiceLoading(false)
+//
+//        }
+    }
 }
 
 @Composable

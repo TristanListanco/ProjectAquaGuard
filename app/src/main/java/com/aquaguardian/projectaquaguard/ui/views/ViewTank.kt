@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.aquaguardian.projectaquaguard.R
+import com.aquaguardian.projectaquaguard.core.BuildConfig
 import com.aquaguardian.projectaquaguard.ui.components.SensorCard
 import com.aquaguardian.projectaquaguard.ui.core.MainRoutes
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
@@ -84,7 +85,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             .padding(bottom = 16.dp)
     ) {
 
-        val (backIcon, titleText, statusCard, label1, sensorsContainer, label2, graphContainer) = createRefs()
+        val (backIcon, titleText, statusCard, label1, sensorsContainer, label2, graphContainer, debugButton) = createRefs()
 
         Row(modifier = Modifier
             .constrainAs(backIcon) {
@@ -107,6 +108,14 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                if(BuildConfig.ENABLE_DATA_DEBUGGER){
+                    Button(onClick = {
+                        nav.navigate(MainRoutes.DataDebugger.route)
+                    },
+                        modifier = Modifier.padding(end = 8.dp, top = 8.dp, bottom = 8.dp)) {
+                        Text(text = "Debug", fontSize = 11.sp, fontFamily = productsans_family, fontWeight = FontWeight.Normal)
+                    }
+                }
                 IconButton(onClick = {
                     openAboutTankDialog.value = !openAboutTankDialog.value
                 }) {
