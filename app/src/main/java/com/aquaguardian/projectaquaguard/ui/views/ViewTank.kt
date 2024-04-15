@@ -85,10 +85,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             .padding(bottom = 16.dp)
     ) {
 
-        val (backIcon, titleText, statusCard, label1, sensorsContainer, label2, graphContainer, debugButton) = createRefs()
+        val (topButtonGroup, titleText, statusCard, label1, sensorsContainer, label2, graphContainer) = createRefs()
 
         Row(modifier = Modifier
-            .constrainAs(backIcon) {
+            .constrainAs(topButtonGroup) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
             }
@@ -141,7 +141,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             },
             modifier = Modifier
                 .constrainAs(titleText) {
-                    top.linkTo(backIcon.bottom)
+                    top.linkTo(topButtonGroup.bottom)
                     start.linkTo(parent.start)
                 }
                 .padding(start = 24.dp, top = 32.dp)
@@ -265,7 +265,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             )
             SensorCard(
-                sensorType = stringResource(id = R.string.temp_text), sensorValue = "7.5", cardStatus = "Updated - Just Now",
+                sensorType = stringResource(id = R.string.temp_text), sensorValue = "10 C", cardStatus = "Updated - Just Now",
                 icon =
                 painterResource(id = R.drawable.waterdrop),
                 modifier = Modifier.padding(start = 8.dp, end = 16.dp)
