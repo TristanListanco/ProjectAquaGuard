@@ -1,5 +1,6 @@
 package com.aquaguardian.projectaquaguard.ui.views.debug
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,6 +55,7 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.util.Date
 import java.util.Locale
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,8 +70,20 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
         "Total Soluble Solids",
         "Total Dissolved Solids",
         "Total Soluble",
-        "Water Temperature"
+        "Water Temperature",
+        "Water Level"
     )
+
+    val dataTypeKeys = listOf(
+        "phData",
+        "tss",
+        "tds",
+        "ts",
+        "wtemp",
+        "wtlvl"
+    )
+
+    val selectedSensorDataKey = remember { mutableStateOf(dataTypeKeys[0]) }
 
     var sensorDataPickerExpanded by remember { mutableStateOf(false) }
     var selectedSensor by remember { mutableStateOf(dataTypes[0]) }
@@ -85,12 +100,18 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
     val randomDataPatternTrends = listOf(
         "Rising",
         "Falling",
-        "Consistent",
-        "Random (Uses the 3 Options above)",
+        "Consistent (Random Values Does Not take Effect)",
+    )
+
+    val randomDataPatternTrendKeys = listOf(
+        "r",
+        "f",
+        "c"
     )
 
     var isPickedDataTrendExpanded by remember { mutableStateOf(false) }
     var pickedDataTrendType by remember { mutableStateOf(randomDataPatternTrends[0]) }
+    var pickedDataTrendTypeKey by remember { mutableStateOf(randomDataPatternTrendKeys[0]) }
 
     val dataTrendPickerShape = if (sensorDataPickerExpanded) RoundedCornerShape(8.dp).copy(
         bottomEnd = CornerSize(0.dp),
@@ -112,6 +133,17 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
     val intervalStartHour = remember { mutableStateOf("") }
     val intervalStartMinute = remember { mutableStateOf("") }
     val intervalStartSecond = remember { mutableStateOf("") }
+
+    val dataMapWithTimestamp = mutableMapOf<String, Map<String, Double>>()
+
+    val initialValue = remember { mutableStateOf("") }
+
+    val isPushingMode = remember { mutableStateOf(false) }
+
+    val lastComputedTimeStamp = remember { mutableStateOf("") }
+    val lastDataValue = remember { mutableStateOf("") }
+
+    val tankIDSelected = remember { mutableStateOf("t1") }
 
     ConstraintLayout(
         modifier = Modifier
@@ -147,15 +179,60 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
             ) {
                 Button(
                     onClick = {
-                        if (!isAllInputDataOk) {
-                            Toast.makeText(ctx, "Error", Toast.LENGTH_SHORT).show()
+                        if (isPushingMode.value) {
+
+                        } else {
+
+                            if (!isAllInputDataOk) {
+                                Toast.makeText(ctx, "Error", Toast.LENGTH_SHORT).show()
+                            } else {
+
+                                // Generate dummy values based on the maxEntries variable
+                                for (i in 1..dataCount.value.toInt()) {
+                                    // Check for Time and Date computation
+                                    if (i == 1) {
+                                        lastComputedTimeStamp.value = startTimeStamp.value
+                                    } else {
+                                        lastComputedTimeStamp.value = addMinutesToDateTime(
+                                            lastComputedTimeStamp.value,
+                                            intervalInMins.value.toInt()
+                                        )
+                                    }
+
+                                    // Generate a dummy value
+                                    if (i == 1) {
+                                        lastDataValue.value = initialValue.value
+                                    } else {
+                                        val offsetToAdd = Random.nextDouble(
+                                            minValue.value.toDouble(),
+                                            maxValue.value.toDouble()
+                                        )
+                                        val calculation =
+                                            lastDataValue.value.toDouble() + offsetToAdd
+                                        lastDataValue.value = calculation.toString()
+                                    }
+
+                                    val sensorDataMap =
+                                        mutableMapOf(selectedSensorDataKey.value to lastDataValue.value.toDouble())
+                                    dataMapWithTimestamp[lastComputedTimeStamp.value] =
+                                        sensorDataMap
+                                }
+
+                                Toast.makeText(ctx, "Generate Finished!", Toast.LENGTH_SHORT).show()
+                                Log.e("DataDebugger", dataMapWithTimestamp.toString())
+
+                            }
                         }
+
                     },
                     modifier = Modifier.padding(top = 8.dp, bottom = 8.dp),
                     enabled = isAllInputDataOk
                 ) {
                     Text(
-                        text = "Generate",
+                        text = when (isPushingMode.value) {
+                            true -> "Push"
+                            false -> "Generate"
+                        },
                         fontSize = 11.sp,
                         fontFamily = productsans_family,
                         fontWeight = FontWeight.Normal
@@ -185,7 +262,6 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }) {
-
 
             ExposedDropdownMenuBox(
                 expanded = sensorDataPickerExpanded,
@@ -229,6 +305,31 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                             text = { Text(selectionOption) },
                             onClick = {
                                 selectedSensor = selectionOption
+                                when (selectionOption) {
+                                    dataTypes[0] -> {
+                                        selectedSensorDataKey.value = dataTypeKeys[0]
+                                    }
+
+                                    dataTypes[1] -> {
+                                        selectedSensorDataKey.value = dataTypeKeys[1]
+                                    }
+
+                                    dataTypes[2] -> {
+                                        selectedSensorDataKey.value = dataTypeKeys[2]
+                                    }
+
+                                    dataTypes[3] -> {
+                                        selectedSensorDataKey.value = dataTypeKeys[3]
+                                    }
+
+                                    dataTypes[4] -> {
+                                        selectedSensorDataKey.value = dataTypeKeys[4]
+                                    }
+
+                                    dataTypes[5] -> {
+                                        selectedSensorDataKey.value = dataTypeKeys[4]
+                                    }
+                                }
                                 sensorDataPickerExpanded = false
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
@@ -242,8 +343,88 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .constrainAs(label1) {
+                .constrainAs(label4) {
                     top.linkTo(dataPicker.bottom)
+                    start.linkTo(parent.start)
+                }
+                .padding(top = 16.dp, bottom = 4.dp, start = 16.dp)
+        ) {
+            Text(
+                text = "INITIAL DATA",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = productsans_family,
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(start = 16.dp, end = 16.dp)
+                .constrainAs(initialParamInputs) {
+                    top.linkTo(label4.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+        ) {
+            TextField(
+                value = initialValue.value,
+                onValueChange = { v ->
+                    initialValue.value = v
+                    isAllInputDataOk = validateData(
+                        minValue.value,
+                        maxValue.value,
+                        dataCount.value,
+                        initialValue.value,
+                        intervalInMins.value,
+                        startTimeStamp.value,
+                        isStartTimestampNotProperFormat.value
+                    )
+                },
+                label = {
+                    Text(
+                        "Initial Value",
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = productsans_family,
+                        fontSize = 11.sp
+                    )
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Decimal
+                )
+            )
+
+            Button(
+                onClick = {
+                    Toast.makeText(ctx, "No Previous Data to Get values from!", Toast.LENGTH_SHORT)
+                        .show()
+                },
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp, start = 8.dp)
+                    .weight(0.57f),
+            ) {
+                Text(
+                    text = "Get Values",
+                    fontSize = 11.sp,
+                    fontFamily = productsans_family,
+                    fontWeight = FontWeight.Normal
+                )
+
+            }
+
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .constrainAs(label1) {
+                    top.linkTo(initialParamInputs.bottom)
                     start.linkTo(parent.start)
                 }
                 .padding(top = 16.dp, bottom = 4.dp, start = 16.dp)
@@ -271,7 +452,15 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 value = minValue.value,
                 onValueChange = { v ->
                     minValue.value = v
-                    isAllInputDataOk = validateData(minValue.value, maxValue.value, dataCount.value)
+                    isAllInputDataOk = validateData(
+                        minValue.value,
+                        maxValue.value,
+                        dataCount.value,
+                        initialValue.value,
+                        intervalInMins.value,
+                        startTimeStamp.value,
+                        isStartTimestampNotProperFormat.value
+                    )
                 },
                 label = {
                     Text(
@@ -293,7 +482,15 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 value = maxValue.value,
                 onValueChange = {
                     maxValue.value = it
-                    isAllInputDataOk = validateData(minValue.value, maxValue.value, dataCount.value)
+                    isAllInputDataOk = validateData(
+                        minValue.value,
+                        maxValue.value,
+                        dataCount.value,
+                        initialValue.value,
+                        intervalInMins.value,
+                        startTimeStamp.value,
+                        isStartTimestampNotProperFormat.value
+                    )
                 },
                 label = {
                     Text(
@@ -346,7 +543,15 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 value = dataCount.value,
                 onValueChange = { v ->
                     dataCount.value = v
-                    isAllInputDataOk = validateData(minValue.value, maxValue.value, dataCount.value)
+                    isAllInputDataOk = validateData(
+                        minValue.value,
+                        maxValue.value,
+                        dataCount.value,
+                        initialValue.value,
+                        intervalInMins.value,
+                        startTimeStamp.value,
+                        isStartTimestampNotProperFormat.value
+                    )
                 },
                 label = {
                     Text(
@@ -408,6 +613,19 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                             text = { Text(selectionOption) },
                             onClick = {
                                 pickedDataTrendType = selectionOption
+                                when (selectionOption) {
+                                    randomDataPatternTrends[0] -> {
+                                        pickedDataTrendTypeKey = randomDataPatternTrendKeys[0]
+                                    }
+
+                                    randomDataPatternTrends[1] -> {
+                                        pickedDataTrendTypeKey = randomDataPatternTrendKeys[1]
+                                    }
+
+                                    randomDataPatternTrends[2] -> {
+                                        pickedDataTrendTypeKey = randomDataPatternTrendKeys[2]
+                                    }
+                                }
                                 isPickedDataTrendExpanded = false
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
@@ -471,11 +689,19 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                         }
                         startTimeStamp.value = v
                         isAllInputDataOk =
-                            validateData(minValue.value, maxValue.value, dataCount.value)
+                            validateData(
+                                minValue.value,
+                                maxValue.value,
+                                dataCount.value,
+                                initialValue.value,
+                                intervalInMins.value,
+                                startTimeStamp.value,
+                                isStartTimestampNotProperFormat.value
+                            )
                     },
                     label = {
                         Text(
-                            "Start Timestamp: MM/DD/YYYY HH:MM:SS",
+                            "Start Timestamp: MM/dd/yyyy HH:mm:ss",
                             fontWeight = FontWeight.Bold,
                             fontFamily = productsans_family,
                             fontSize = 11.sp
@@ -488,7 +714,7 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                         capitalization = KeyboardCapitalization.None,
 
 
-                    )
+                        )
                 )
                 if (isStartTimestampNotProperFormat.value) {
                     Text(
@@ -505,7 +731,15 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 value = intervalInMins.value,
                 onValueChange = { v ->
                     intervalInMins.value = v
-                    isAllInputDataOk = validateData(minValue.value, maxValue.value, dataCount.value)
+                    isAllInputDataOk = validateData(
+                        minValue.value,
+                        maxValue.value,
+                        dataCount.value,
+                        initialValue.value,
+                        intervalInMins.value,
+                        startTimeStamp.value,
+                        isStartTimestampNotProperFormat.value
+                    )
                 },
                 label = {
                     Text(
@@ -529,12 +763,24 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
 
 }
 
-fun validateData(minValue: String, maxValue: String, dataCount: String): Boolean {
-    if (maxValue.isNotEmpty() && minValue.isNotEmpty() && dataCount.isNotEmpty()) {
+fun validateData(
+    minValue: String,
+    maxValue: String,
+    dataCount: String,
+    initialValue: String,
+    intervalInMins: String,
+    startTimeStamp: String,
+    isStartTimestampNotProperFormat: Boolean
+): Boolean {
+    if (maxValue.isNotEmpty() && minValue.isNotEmpty() && dataCount.isNotEmpty() && initialValue.isNotEmpty() && intervalInMins.isNotEmpty() && startTimeStamp.isNotEmpty()) {
         if (minValue.toDouble() > maxValue.toDouble()) {
             return false
         } else {
-            return true
+            if (!isStartTimestampNotProperFormat) {
+                return true
+            } else {
+                return false
+            }
         }
     } else {
         return false
@@ -553,4 +799,7 @@ fun addMinutesToDateTime(dateTimeString: String, minutesToAdd: Int): String {
     val dateTime = LocalDateTime.parse(dateTimeString, dateTimeFormatter)
     val updatedDateTime = dateTime.plusMinutes(minutesToAdd.toLong())
     return updatedDateTime.format(dateTimeFormatter)
+}
+
+fun generateListOfData() {
 }
