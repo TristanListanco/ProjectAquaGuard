@@ -32,7 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -913,48 +912,45 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
         }
 
         if (isDataGenerated.value) {
-
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .constrainAs(label6) {
-                    top.linkTo(timestampOptionInputs.bottom)
-                    start.linkTo(parent.start)
-                }
-                .padding(top = 16.dp, bottom = 4.dp, start = 16.dp)
-        ) {
-            Text(
-                text = "DATA PREVIEW",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = productsans_family,
-            )
-        }
-
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(start = 16.dp, end = 16.dp)
-                .constrainAs(dataPreview) {
-                    top.linkTo(label6.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-        ) {
-            var i = 0;
-            dataMapWithTimestamp.forEach { (timestamp, memberMap) ->
-                val isListStart = i == 0
-                val isListEnd = i == dataMapWithTimestamp.size
-                DataListItem(timestamp = timestamp, value = memberMap.values.first().toString(), isStartOfList = isListStart, isEndOfList = isListEnd )
-                i++;
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .constrainAs(label6) {
+                        top.linkTo(timestampOptionInputs.bottom)
+                        start.linkTo(parent.start)
+                    }
+                    .padding(top = 16.dp, bottom = 4.dp, start = 16.dp)
+            ) {
+                Text(
+                    text = "DATA PREVIEW",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = productsans_family,
+                )
             }
-            i = 0;
-        }
 
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(start = 16.dp, end = 16.dp)
+                    .constrainAs(dataPreview) {
+                        top.linkTo(label6.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+            ) {
+                var i = 0
+                dataMapWithTimestamp.forEach { (timestamp, memberMap) ->
+                    val isListStart = i == 0
+                    val isListEnd = i == dataMapWithTimestamp.size
+                    DataListItem(timestamp = timestamp, value = memberMap.values.first().toString(), isStartOfList = isListStart, isEndOfList = isListEnd )
+                    i++
+                }
+                i = 0
+            }
+        }
     }
 
 
@@ -969,18 +965,14 @@ fun validateData(
     startTimeStamp: String,
     isStartTimestampNotProperFormat: Boolean
 ): Boolean {
-    if (maxValue.isNotEmpty() && minValue.isNotEmpty() && dataCount.isNotEmpty() && initialValue.isNotEmpty() && intervalInMins.isNotEmpty() && startTimeStamp.isNotEmpty()) {
-        if (minValue.toDouble() > maxValue.toDouble()) {
-            return false
+    return if (maxValue.isNotEmpty() && minValue.isNotEmpty() && dataCount.isNotEmpty() && initialValue.isNotEmpty() && intervalInMins.isNotEmpty() && startTimeStamp.isNotEmpty()) {
+        return if (minValue.toDouble() > maxValue.toDouble()) {
+            false
         } else {
-            if (!isStartTimestampNotProperFormat) {
-                return true
-            } else {
-                return false
-            }
+            !isStartTimestampNotProperFormat
         }
     } else {
-        return false
+        false
     }
 }
 
@@ -1003,12 +995,12 @@ fun removeSlashesAndReplaceSpaces(input: String): String {
     val noSlashes = input.replace("/", "-")
 
     // Then replace spaces with dashes
-    val noSpaces = noSlashes.replace(" ", "-")
 
     // Return the modified string
-    return noSpaces
+    return noSlashes.replace(" ", "-")
 }
 
+@Suppress("UNCHECKED_CAST")
 fun flattenMap(nestedMap: Map<String, Any>, prefix: String = ""): Map<String, Any> {
     val flatMap = mutableMapOf<String, Any>()
 
