@@ -49,6 +49,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.aquaguardian.projectaquaguard.core.vms.MainVMService
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
+import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -139,11 +140,17 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
     val initialValue = remember { mutableStateOf("") }
 
     val isPushingMode = remember { mutableStateOf(false) }
+    val isDataGenerated = remember { mutableStateOf(false) }
 
     val lastComputedTimeStamp = remember { mutableStateOf("") }
     val lastDataValue = remember { mutableStateOf("") }
 
     val tankIDSelected = remember { mutableStateOf("t1") }
+
+    val userIDAuth = remember { mutableStateOf("pvbkhv0iJ4RViT9qlJzBeNkndPS2") }
+
+    val database = FirebaseDatabase.getInstance()
+    val databaseReference = database.getReference("usrdata/pvbkhv0iJ4RViT9qlJzBeNkndPS2/phData")
 
     ConstraintLayout(
         modifier = Modifier
@@ -177,10 +184,38 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
+                if (isDataGenerated.value) {
+                    Button(
+                        onClick = {
+                            dataMapWithTimestamp.clear()
+                            isPushingMode.value = false
+                            isDataGenerated.value = false
+                        },
+                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
+                    ) {
+                        Text(
+                            text = "Clear",
+                            fontSize = 11.sp,
+                            fontFamily = productsans_family,
+                            fontWeight = FontWeight.Normal
+                        )
+
+                    }
+                }
+
                 Button(
                     onClick = {
                         if (isPushingMode.value) {
-
+                            databaseReference.setValue(dataMapWithTimestamp.to )
+                                .addOnSuccessListener {
+                                    // Data pushed successfully
+                                    Toast.makeText(ctx, "Data pushed successfully to Firebase Realtime Database.", Toast.LENGTH_SHORT).show()
+                                }
+                                .addOnFailureListener { exception ->
+                                    // Error occurred while pushing data
+                                    Toast.makeText(ctx, "Error pushing data: ${exception.message}", Toast.LENGTH_SHORT).show()
+                                }
                         } else {
 
                             if (!isAllInputDataOk) {
@@ -214,12 +249,14 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
 
                                     val sensorDataMap =
                                         mutableMapOf(selectedSensorDataKey.value to lastDataValue.value.toDouble())
-                                    dataMapWithTimestamp[lastComputedTimeStamp.value] =
+                                    dataMapWithTimestamp[removeSlashesAndReplaceSpaces(lastComputedTimeStamp.value)] =
                                         sensorDataMap
                                 }
 
                                 Toast.makeText(ctx, "Generate Finished!", Toast.LENGTH_SHORT).show()
                                 Log.e("DataDebugger", dataMapWithTimestamp.toString())
+                                isPushingMode.value = true
+                                isDataGenerated.value = true
 
                             }
                         }
@@ -801,5 +838,13 @@ fun addMinutesToDateTime(dateTimeString: String, minutesToAdd: Int): String {
     return updatedDateTime.format(dateTimeFormatter)
 }
 
-fun generateListOfData() {
+fun removeSlashesAndReplaceSpaces(input: String): String {
+    // First replace forward slashes with dashes
+    val noSlashes = input.replace("/", "-")
+
+    // Then replace spaces with dashes
+    val noSpaces = noSlashes.replace(" ", "-")
+
+    // Return the modified string
+    return noSpaces
 }
