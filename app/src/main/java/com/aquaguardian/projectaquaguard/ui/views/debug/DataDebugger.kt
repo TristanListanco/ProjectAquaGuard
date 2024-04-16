@@ -18,11 +18,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -136,6 +139,10 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
     val intervalStartSecond = remember { mutableStateOf("") }
 
     val dataMapWithTimestamp = mutableMapOf<String, Map<String, Double>>()
+    val dataMapWithSensorType = mutableMapOf<String, Map<String, Map<String, Double>>>()
+    val dataMapWithTankID = mutableMapOf<String, Map<String, Map<String, Map<String, Double>>>>()
+    val dataMapWithAuthUID =
+        mutableMapOf<String, Map<String, Map<String, Map<String, Map<String, Double>>>>>()
 
     val initialValue = remember { mutableStateOf("") }
 
@@ -150,7 +157,7 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
     val userIDAuth = remember { mutableStateOf("pvbkhv0iJ4RViT9qlJzBeNkndPS2") }
 
     val database = FirebaseDatabase.getInstance()
-    val databaseReference = database.getReference("usrdata/pvbkhv0iJ4RViT9qlJzBeNkndPS2/phData")
+    val databaseReference = database.getReference("usrdata")
 
     ConstraintLayout(
         modifier = Modifier
@@ -160,7 +167,7 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
             .padding(bottom = 16.dp),
         animateChanges = true
     ) {
-        val (topButtonGroup, titleText, dataPicker, label1, randomDataRangeInputs, label2, dataOptionsInput, label3, timestampOptionInputs, label4, initialParamInputs) = createRefs()
+        val (topButtonGroup, titleText, dataPicker, label1, randomDataRangeInputs, label2, dataOptionsInput, label3, timestampOptionInputs, label4, initialParamInputs, label5, databaseInput, label6, dataPreview) = createRefs()
 
         Row(modifier = Modifier
             .constrainAs(topButtonGroup) {
@@ -207,14 +214,23 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 Button(
                     onClick = {
                         if (isPushingMode.value) {
-                            databaseReference.setValue(dataMapWithTimestamp.to )
+                            val flatMap = flattenMap(dataMapWithAuthUID)
+                            databaseReference.updateChildren(flatMap)
                                 .addOnSuccessListener {
                                     // Data pushed successfully
-                                    Toast.makeText(ctx, "Data pushed successfully to Firebase Realtime Database.", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        ctx,
+                                        "Data pushed successfully to Firebase Realtime Database.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                                 .addOnFailureListener { exception ->
                                     // Error occurred while pushing data
-                                    Toast.makeText(ctx, "Error pushing data: ${exception.message}", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        ctx,
+                                        "Error pushing data: ${exception.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                         } else {
 
@@ -249,9 +265,16 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
 
                                     val sensorDataMap =
                                         mutableMapOf(selectedSensorDataKey.value to lastDataValue.value.toDouble())
-                                    dataMapWithTimestamp[removeSlashesAndReplaceSpaces(lastComputedTimeStamp.value)] =
+                                    dataMapWithTimestamp[removeSlashesAndReplaceSpaces(
+                                        lastComputedTimeStamp.value
+                                    )] =
                                         sensorDataMap
                                 }
+
+                                dataMapWithSensorType[selectedSensorDataKey.value] =
+                                    dataMapWithTimestamp
+                                dataMapWithTankID[tankIDSelected.value] = dataMapWithSensorType
+                                dataMapWithAuthUID[userIDAuth.value] = dataMapWithTankID
 
                                 Toast.makeText(ctx, "Generate Finished!", Toast.LENGTH_SHORT).show()
                                 Log.e("DataDebugger", dataMapWithTimestamp.toString())
@@ -380,8 +403,100 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .constrainAs(label4) {
+                .constrainAs(label5) {
                     top.linkTo(dataPicker.bottom)
+                    start.linkTo(parent.start)
+                }
+                .padding(top = 16.dp, bottom = 4.dp, start = 16.dp)
+        ) {
+            Text(
+                text = "DATABASE SETTINGS",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = productsans_family,
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(start = 16.dp, end = 16.dp)
+                .constrainAs(databaseInput) {
+                    top.linkTo(label5.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+        ) {
+            TextField(
+                value = tankIDSelected.value,
+                onValueChange = { v ->
+                    tankIDSelected.value = v
+                    isAllInputDataOk = validateData(
+                        minValue.value,
+                        maxValue.value,
+                        dataCount.value,
+                        initialValue.value,
+                        intervalInMins.value,
+                        startTimeStamp.value,
+                        isStartTimestampNotProperFormat.value
+                    )
+                },
+                label = {
+                    Text(
+                        "Tank ID: (Format t followed by id num [t1])",
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = productsans_family,
+                        fontSize = 11.sp
+                    )
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Decimal
+                )
+            )
+            TextField(
+                value = userIDAuth.value,
+                onValueChange = {
+                    userIDAuth.value = it
+                    isAllInputDataOk = validateData(
+                        minValue.value,
+                        maxValue.value,
+                        dataCount.value,
+                        initialValue.value,
+                        intervalInMins.value,
+                        startTimeStamp.value,
+                        isStartTimestampNotProperFormat.value
+                    )
+                },
+                label = {
+                    Text(
+                        "User Auth ID",
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = productsans_family,
+                        fontSize = 11.sp
+                    )
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Decimal
+                ),
+            )
+        }
+
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .constrainAs(label4) {
+                    top.linkTo(databaseInput.bottom)
                     start.linkTo(parent.start)
                 }
                 .padding(top = 16.dp, bottom = 4.dp, start = 16.dp)
@@ -402,6 +517,7 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 .constrainAs(initialParamInputs) {
                     top.linkTo(label4.bottom)
                     start.linkTo(parent.start)
+
                     end.linkTo(parent.end)
                 }
         ) {
@@ -795,6 +911,50 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                 )
             )
         }
+
+        if (isDataGenerated.value) {
+
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .constrainAs(label6) {
+                    top.linkTo(timestampOptionInputs.bottom)
+                    start.linkTo(parent.start)
+                }
+                .padding(top = 16.dp, bottom = 4.dp, start = 16.dp)
+        ) {
+            Text(
+                text = "DATA PREVIEW",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = productsans_family,
+            )
+        }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(start = 16.dp, end = 16.dp)
+                .constrainAs(dataPreview) {
+                    top.linkTo(label6.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+        ) {
+            var i = 0;
+            dataMapWithTimestamp.forEach { (timestamp, memberMap) ->
+                val isListStart = i == 0
+                val isListEnd = i == dataMapWithTimestamp.size
+                DataListItem(timestamp = timestamp, value = memberMap.values.first().toString(), isStartOfList = isListStart, isEndOfList = isListEnd )
+                i++;
+            }
+            i = 0;
+        }
+
     }
 
 
@@ -847,4 +1007,57 @@ fun removeSlashesAndReplaceSpaces(input: String): String {
 
     // Return the modified string
     return noSpaces
+}
+
+fun flattenMap(nestedMap: Map<String, Any>, prefix: String = ""): Map<String, Any> {
+    val flatMap = mutableMapOf<String, Any>()
+
+    nestedMap.forEach { (key, value) ->
+        val path = if (prefix.isNotEmpty()) "$prefix/$key" else key
+
+        if (value is Map<*, *>) {
+            // Recursive call for nested maps
+            flatMap.putAll(flattenMap(value as Map<String, Any>, path))
+        } else {
+            flatMap[path] = value
+        }
+    }
+
+    return flatMap
+}
+
+@Composable
+fun DataListItem(
+    timestamp: String,
+    value: String,
+    isStartOfList: Boolean,
+    isEndOfList: Boolean
+) {
+    if(!isStartOfList){
+        HorizontalDivider(modifier = Modifier.fillMaxWidth())
+    }
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+        .padding(start = 8.dp, end = 8.dp)) {
+        Text(
+            text = timestamp,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = productsans_family,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = value,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = productsans_family,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f)
+        )
+    }
+    if(!isEndOfList){
+        HorizontalDivider(modifier = Modifier.fillMaxWidth())
+    }
 }
