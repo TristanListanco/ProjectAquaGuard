@@ -34,6 +34,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -65,7 +67,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
 
     val wlvlData = remember { mutableStateOf<Pair<String, String>?>(null) }
     val wtempData = remember { mutableStateOf<Pair<String, String>?>(null) }
-    var pHData = remember { mutableStateOf<Pair<String, String>?>(null) }
+    val pHData = remember { mutableStateOf<Pair<String, String>?>(null) }
     val turbidityData = remember { mutableStateOf<Pair<String, String>?>(null) }
     val tdsData = remember { mutableStateOf<Pair<String, String>?>(null) }
 
@@ -295,7 +297,8 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
     val sensorCardGroupScroll = rememberScrollState()
 
     var expanded by remember { mutableStateOf(true) }
-    val height = animateDpAsState(if (expanded) 100.dp else 0.dp, label = "Transition")
+    val waterLevelHeightDP = remember { mutableIntStateOf(0) }
+    val height = animateDpAsState(if (expanded) waterLevelHeightDP.intValue.dp else waterLevelHeightDP.intValue.dp, label = "Transition")
 
     if (tankId == null) {
         nav.navigate(MainRoutes.MainNav.route)
@@ -387,10 +390,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                         MaterialTheme.colorScheme.surface
                     ),
                 contentColor = MaterialTheme.colorScheme.tertiaryContainer
-            ),
-            onClick = {
-                expanded = !expanded
-            }
+            )
         ) {
 
             Box(
@@ -425,6 +425,9 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     )
 
                     if(wlvlData.value != null){
+                        val wlvl = wlvlData.value!!.first.toIntOrNull() ?: 0
+                        waterLevelHeightDP.intValue = wlvl.map(0, 100, 0, 150)
+                        expanded = !expanded
                         Text(
                             color = MaterialTheme.colorScheme.onTertiary,
                             fontWeight = FontWeight.Bold,
@@ -626,4 +629,8 @@ fun AboutTankDialog(openAboutTankDialog: MutableState<Boolean>, tankId: String?)
     }, icon = {
         Icon(imageVector = Icons.Outlined.Info, contentDescription = "About Tank Info Icon")
     })
+}
+
+fun Int.map(fromMin: Int, fromMax: Int, toMin: Int, toMax: Int): Int {
+    return ((this - fromMin) * (toMax - toMin) / (fromMax - fromMin)) + toMin
 }
