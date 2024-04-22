@@ -30,7 +30,7 @@ The water tank without filtration doesn\'t have any cleaning system, so it\'s no
     
     
     <string name="ph_text">pH</string>
-    <string name="turbidityTSS_text">Total Soluble Solids</string>
+    <string name="turbidityTSS_text">Turbidity</string>
     <string name="tds_text">Total Dissolved Solids</string>
     <string name="total_soluble_text">Total Soluble</string>
     <string name="temp_text">Water Temperature</string>

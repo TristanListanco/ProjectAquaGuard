@@ -1,5 +1,6 @@
 package com.aquaguardian.projectaquaguard.ui.views
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -52,10 +53,158 @@ import com.aquaguardian.projectaquaguard.core.BuildConfig
 import com.aquaguardian.projectaquaguard.ui.components.SensorCard
 import com.aquaguardian.projectaquaguard.ui.core.MainRoutes
 import com.aquaguardian.projectaquaguard.ui.theme.productsans_family
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 @Composable
 fun ViewTank(nav: NavHostController, tankId: String? = null) {
+
+    val wlvlData = remember { mutableStateOf<Pair<Long, String>?>(null) }
+    val wtempData = remember { mutableStateOf<Pair<Long, String>?>(null) }
+    var pHData = remember { mutableStateOf<Pair<String, String>?>(null) }
+    val turbidityData = remember { mutableStateOf<Pair<Long, String>?>(null) }
+    val tdsData = remember { mutableStateOf<Pair<Long, String>?>(null) }
+
+    val ctx = LocalContext.current
+    val database = FirebaseDatabase.getInstance()
+    val uid = "pvbkhv0iJ4RViT9qlJzBeNkndPS2"
+
+    val wlvlPath = "usrdata/$uid/$tankId/wlvl"
+    val wtempPath = "usrdata/$uid/$tankId/wtemp"
+    val pHDataPath = "usrdata/$uid/$tankId/phData"
+    val turbidityDataPath = "usrdata/$uid/$tankId/turbidity"
+    val tdsPath = "usrdata/$uid/$tankId/tds"
+
+    val ref1 = database.getReference(wlvlPath)
+    val ref2 = database.getReference(wtempPath)
+    val ref3 = database.getReference(pHDataPath)
+    val ref4 = database.getReference(turbidityDataPath)
+    val ref5 = database.getReference(tdsPath)
+
+    val wlvlListener = object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            snapshot.children.lastOrNull()?.let { recentSnapshot ->
+
+                val timestamp = recentSnapshot.key?.toLongOrNull()
+                val value = recentSnapshot.value.toString()
+                if (timestamp != null && value.isNotEmpty()) {
+                    wlvlData.value = timestamp to value
+                }
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(ctx, error.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    ref1.addListenerForSingleValueEvent(wlvlListener)
+
+    val wtempListener = object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            snapshot.children.lastOrNull()?.let { recentSnapshot ->
+                val timestamp = recentSnapshot.key?.toLongOrNull()
+                val value = recentSnapshot.value.toString()
+                if (timestamp != null && value.isNotEmpty()) {
+                    wtempData.value = timestamp to value
+                }
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(ctx, error.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    ref2.addListenerForSingleValueEvent(wtempListener)
+
+    val phListener = object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            snapshot.children.lastOrNull()?.let { recentSnapshot ->
+                val sortedEntries = recentSnapshot.children.sortedByDescending { it.key }
+                pHData.value = sortedEntries[0].value.toString() to recentSnapshot.key.toString()
+
+                Log.d("ViewTank Test", "onDataChange() Called!")
+                ref3.removeEventListener(this)
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(ctx, error.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    val phChildEventListener = object : ChildEventListener {
+        override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+
+            ref3.addListenerForSingleValueEvent(phListener)
+            Log.d("ViewTank Test", "onChildAdded() Called!")
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            ref3.addListenerForSingleValueEvent(phListener)
+            Log.d("ViewTank Test", "onChildChanged() Called!")
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            ref3.addListenerForSingleValueEvent(phListener)
+            Log.d("ViewTank Test", "onChildRemoved() Called!")
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            ref3.addListenerForSingleValueEvent(phListener)
+            Log.d("ViewTank Test", "onChildMoved() Called!")
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            ref3.addListenerForSingleValueEvent(phListener)
+            Log.d("ViewTank Test", "onCancelled() Called!")
+        }
+    }
+
+    ref3.addChildEventListener(phChildEventListener)
+
+    val turbidityListener = object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            snapshot.children.lastOrNull()?.let { recentSnapshot ->
+                val timestamp = recentSnapshot.key?.toLongOrNull()
+                val value = recentSnapshot.value.toString()
+                if (timestamp != null && value.isNotEmpty()) {
+                    turbidityData.value = timestamp to value
+                }
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(ctx, error.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    ref4.addListenerForSingleValueEvent(turbidityListener)
+
+    val tdsListener = object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            snapshot.children.lastOrNull()?.let { recentSnapshot ->
+                val timestamp = recentSnapshot.key?.toLongOrNull()
+                val value = recentSnapshot.value.toString()
+                if (timestamp != null && value.isNotEmpty()) {
+                    tdsData.value = timestamp to value
+                }
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            Toast.makeText(ctx, error.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    ref5.addListenerForSingleValueEvent(tdsListener)
+
+
 
     val openAboutTankDialog = remember { mutableStateOf(false) }
 
@@ -65,7 +214,6 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         }
     }
 
-    val ctx = LocalContext.current
     val scrollState = rememberScrollState()
     val sensorCardGroupScroll = rememberScrollState()
 
@@ -234,20 +382,21 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     end.linkTo(parent.end)
                     top.linkTo(label1.bottom)
                 }) {
-            SensorCard(
-                sensorType = stringResource(id = R.string.ph_text), sensorValue = "7.5", cardStatus = "Updated - Just Now",
-                icon =
-                painterResource(id = R.drawable.waterdrop),
-                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-            )
-            SensorCard(
-                sensorType = stringResource(id = R.string.turbidityTSS_text),
-                sensorValue = "7.5",
-                cardStatus = "Updated - Just Now",
-                icon =
-                painterResource(id = R.drawable.waterdrop),
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
-            )
+            if(pHData.value != null) {
+                SensorCard(
+                    sensorType = stringResource(id = R.string.ph_text), sensorValue = pHData.value!!.first, cardStatus = "Updated - Just Now",
+                    icon =
+                    painterResource(id = R.drawable.waterdrop),
+                    modifier = Modifier.padding(start = 16.dp, end = 8.dp)
+                )
+            } else {
+                SensorCard(
+                    sensorType = stringResource(id = R.string.ph_text), sensorValue = "??", cardStatus = "Updated - Just Now",
+                    icon =
+                    painterResource(id = R.drawable.waterdrop),
+                    modifier = Modifier.padding(start = 16.dp, end = 8.dp)
+                )
+            }
             SensorCard(
                 sensorType = stringResource(id = R.string.tds_text),
                 sensorValue = "7.5",
@@ -257,7 +406,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             )
             SensorCard(
-                sensorType = stringResource(id = R.string.total_soluble_text),
+                sensorType = stringResource(id = R.string.turbidityTSS_text),
                 sensorValue = "7.5",
                 cardStatus = "Updated - Just Now",
                 icon =
@@ -315,7 +464,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                         Text(text = "View All", fontSize = 12.sp)
                     }
                 }
-                
+
             }
         }
     }
