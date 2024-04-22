@@ -63,11 +63,11 @@ import com.google.firebase.database.ValueEventListener
 @Composable
 fun ViewTank(nav: NavHostController, tankId: String? = null) {
 
-    val wlvlData = remember { mutableStateOf<Pair<Long, String>?>(null) }
-    val wtempData = remember { mutableStateOf<Pair<Long, String>?>(null) }
+    val wlvlData = remember { mutableStateOf<Pair<String, String>?>(null) }
+    val wtempData = remember { mutableStateOf<Pair<String, String>?>(null) }
     var pHData = remember { mutableStateOf<Pair<String, String>?>(null) }
-    val turbidityData = remember { mutableStateOf<Pair<Long, String>?>(null) }
-    val tdsData = remember { mutableStateOf<Pair<Long, String>?>(null) }
+    val turbidityData = remember { mutableStateOf<Pair<String, String>?>(null) }
+    val tdsData = remember { mutableStateOf<Pair<String, String>?>(null) }
 
     val ctx = LocalContext.current
     val database = FirebaseDatabase.getInstance()
@@ -88,12 +88,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
     val wlvlListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             snapshot.children.lastOrNull()?.let { recentSnapshot ->
+                val sortedEntries = recentSnapshot.children.sortedByDescending { it.key }
+                wlvlData.value = sortedEntries[0].value.toString() to recentSnapshot.key.toString()
 
-                val timestamp = recentSnapshot.key?.toLongOrNull()
-                val value = recentSnapshot.value.toString()
-                if (timestamp != null && value.isNotEmpty()) {
-                    wlvlData.value = timestamp to value
-                }
+                ref1.removeEventListener(this)
             }
         }
 
@@ -102,16 +100,39 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         }
     }
 
-    ref1.addListenerForSingleValueEvent(wlvlListener)
+    val wllvlChildListener = object : ChildEventListener {
+        override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+            ref1.addListenerForSingleValueEvent(wlvlListener)
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            ref1.addListenerForSingleValueEvent(wlvlListener)
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            ref1.addListenerForSingleValueEvent(wlvlListener)
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            ref1.addListenerForSingleValueEvent(wlvlListener)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            ref1.addListenerForSingleValueEvent(wlvlListener)
+        }
+    }
+
+    ref1.addChildEventListener(wllvlChildListener)
+
+
 
     val wtempListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             snapshot.children.lastOrNull()?.let { recentSnapshot ->
-                val timestamp = recentSnapshot.key?.toLongOrNull()
-                val value = recentSnapshot.value.toString()
-                if (timestamp != null && value.isNotEmpty()) {
-                    wtempData.value = timestamp to value
-                }
+                val sortedEntries = recentSnapshot.children.sortedByDescending { it.key }
+                wtempData.value = sortedEntries[0].value.toString() to recentSnapshot.key.toString()
+
+                ref2.removeEventListener(this)
             }
         }
 
@@ -120,7 +141,29 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         }
     }
 
-    ref2.addListenerForSingleValueEvent(wtempListener)
+    val wtempChildListener = object : ChildEventListener {
+        override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+            ref2.addListenerForSingleValueEvent(wtempListener)
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            ref2.addListenerForSingleValueEvent(wtempListener)
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            ref2.addListenerForSingleValueEvent(wtempListener)
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            ref2.addListenerForSingleValueEvent(wtempListener)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            ref2.addListenerForSingleValueEvent(wtempListener)
+        }
+    }
+
+    ref2.addChildEventListener(wtempChildListener)
 
     val phListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
@@ -128,7 +171,6 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 val sortedEntries = recentSnapshot.children.sortedByDescending { it.key }
                 pHData.value = sortedEntries[0].value.toString() to recentSnapshot.key.toString()
 
-                Log.d("ViewTank Test", "onDataChange() Called!")
                 ref3.removeEventListener(this)
             }
         }
@@ -140,29 +182,23 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
 
     val phChildEventListener = object : ChildEventListener {
         override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-
             ref3.addListenerForSingleValueEvent(phListener)
-            Log.d("ViewTank Test", "onChildAdded() Called!")
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
             ref3.addListenerForSingleValueEvent(phListener)
-            Log.d("ViewTank Test", "onChildChanged() Called!")
         }
 
         override fun onChildRemoved(snapshot: DataSnapshot) {
             ref3.addListenerForSingleValueEvent(phListener)
-            Log.d("ViewTank Test", "onChildRemoved() Called!")
         }
 
         override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
             ref3.addListenerForSingleValueEvent(phListener)
-            Log.d("ViewTank Test", "onChildMoved() Called!")
         }
 
         override fun onCancelled(error: DatabaseError) {
             ref3.addListenerForSingleValueEvent(phListener)
-            Log.d("ViewTank Test", "onCancelled() Called!")
         }
     }
 
@@ -171,11 +207,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
     val turbidityListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             snapshot.children.lastOrNull()?.let { recentSnapshot ->
-                val timestamp = recentSnapshot.key?.toLongOrNull()
-                val value = recentSnapshot.value.toString()
-                if (timestamp != null && value.isNotEmpty()) {
-                    turbidityData.value = timestamp to value
-                }
+                val sortedEntries = recentSnapshot.children.sortedByDescending { it.key }
+                turbidityData.value = sortedEntries[0].value.toString() to recentSnapshot.key.toString()
+
+                ref4.removeEventListener(this)
             }
         }
 
@@ -184,16 +219,37 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         }
     }
 
-    ref4.addListenerForSingleValueEvent(turbidityListener)
+    val turbidityChildListener = object : ChildEventListener {
+        override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+            ref4.addListenerForSingleValueEvent(turbidityListener)
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            ref4.addListenerForSingleValueEvent(turbidityListener)
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            ref4.addListenerForSingleValueEvent(turbidityListener)
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            ref4.addListenerForSingleValueEvent(turbidityListener)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            ref4.addListenerForSingleValueEvent(turbidityListener)
+        }
+    }
+
+    ref4.addChildEventListener(turbidityChildListener)
 
     val tdsListener = object : ValueEventListener {
         override fun onDataChange(snapshot: DataSnapshot) {
             snapshot.children.lastOrNull()?.let { recentSnapshot ->
-                val timestamp = recentSnapshot.key?.toLongOrNull()
-                val value = recentSnapshot.value.toString()
-                if (timestamp != null && value.isNotEmpty()) {
-                    tdsData.value = timestamp to value
-                }
+                val sortedEntries = recentSnapshot.children.sortedByDescending { it.key }
+                tdsData.value = sortedEntries[0].value.toString() to recentSnapshot.key.toString()
+
+                ref5.removeEventListener(this)
             }
         }
 
@@ -202,8 +258,29 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         }
     }
 
-    ref5.addListenerForSingleValueEvent(tdsListener)
+    val tdsChildListener = object : ChildEventListener {
+        override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+            ref5.addListenerForSingleValueEvent(tdsListener)
+        }
 
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            ref5.addListenerForSingleValueEvent(tdsListener)
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            ref5.addListenerForSingleValueEvent(tdsListener)
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            ref5.addListenerForSingleValueEvent(tdsListener)
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            ref5.addListenerForSingleValueEvent(tdsListener)
+        }
+    }
+
+    ref5.addChildEventListener(tdsChildListener)
 
 
     val openAboutTankDialog = remember { mutableStateOf(false) }
@@ -347,14 +424,25 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                             .padding(8.dp),
                     )
 
-                    Text(
-                        color = MaterialTheme.colorScheme.onTertiary,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = productsans_family,
-                        fontSize = 40.sp,
-                        text = "80%",
-                        modifier = Modifier.padding(8.dp)
-                    )
+                    if(wlvlData.value != null){
+                        Text(
+                            color = MaterialTheme.colorScheme.onTertiary,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = productsans_family,
+                            fontSize = 40.sp,
+                            text = "${wlvlData.value!!.first}%",
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    } else {
+                        Text(
+                            color = MaterialTheme.colorScheme.onTertiary,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = productsans_family,
+                            fontSize = 40.sp,
+                            text = "0%",
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
                 }
             }
         }
@@ -391,34 +479,65 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 )
             } else {
                 SensorCard(
-                    sensorType = stringResource(id = R.string.ph_text), sensorValue = "??", cardStatus = "Updated - Just Now",
+                    sensorType = stringResource(id = R.string.ph_text), sensorValue = "...", cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
                     modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                 )
             }
-            SensorCard(
-                sensorType = stringResource(id = R.string.tds_text),
-                sensorValue = "7.5",
-                cardStatus = "Updated - Just Now",
-                icon =
-                painterResource(id = R.drawable.waterdrop),
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
-            )
-            SensorCard(
-                sensorType = stringResource(id = R.string.turbidityTSS_text),
-                sensorValue = "7.5",
-                cardStatus = "Updated - Just Now",
-                icon =
-                painterResource(id = R.drawable.waterdrop),
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp)
-            )
-            SensorCard(
-                sensorType = stringResource(id = R.string.temp_text), sensorValue = "10 C", cardStatus = "Updated - Just Now",
-                icon =
-                painterResource(id = R.drawable.waterdrop),
-                modifier = Modifier.padding(start = 8.dp, end = 16.dp)
-            )
+            if(tdsData.value != null){
+                SensorCard(
+                    sensorType = stringResource(id = R.string.tds_text),
+                    sensorValue = tdsData.value!!.first,
+                    cardStatus = "Updated - Just Now",
+                    icon =
+                    painterResource(id = R.drawable.waterdrop),
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                )
+            } else {
+                SensorCard(
+                    sensorType = stringResource(id = R.string.tds_text),
+                    sensorValue = "...",
+                    cardStatus = "Updated - Just Now",
+                    icon =
+                    painterResource(id = R.drawable.waterdrop),
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                )
+            }
+            if(turbidityData.value != null){
+                SensorCard(
+                    sensorType = stringResource(id = R.string.turbidityTSS_text),
+                    sensorValue = turbidityData.value!!.second,
+                    cardStatus = "Updated - Just Now",
+                    icon =
+                    painterResource(id = R.drawable.waterdrop),
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                )
+            } else {
+                SensorCard(
+                    sensorType = stringResource(id = R.string.turbidityTSS_text),
+                    sensorValue = "...",
+                    cardStatus = "Updated - Just Now",
+                    icon =
+                    painterResource(id = R.drawable.waterdrop),
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                )
+            }
+            if(wtempData.value !=null){
+                SensorCard(
+                    sensorType = stringResource(id = R.string.temp_text), sensorValue = "${wtempData.value!!.first} °C", cardStatus = "Updated - Just Now",
+                    icon =
+                    painterResource(id = R.drawable.waterdrop),
+                    modifier = Modifier.padding(start = 8.dp, end = 16.dp)
+                )
+            } else {
+                SensorCard(
+                    sensorType = stringResource(id = R.string.temp_text), sensorValue = "...", cardStatus = "Updated - Just Now",
+                    icon =
+                    painterResource(id = R.drawable.waterdrop),
+                    modifier = Modifier.padding(start = 8.dp, end = 16.dp)
+                )
+            }
         }
 
         Text(

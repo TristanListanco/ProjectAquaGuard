@@ -83,7 +83,7 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
         "tds",
         "ts",
         "wtemp",
-        "wtlvl"
+        "wlvl"
     )
 
     val selectedSensorDataKey = remember { mutableStateOf(dataTypeKeys[0]) }
@@ -386,7 +386,7 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                                     }
 
                                     dataTypes[5] -> {
-                                        selectedSensorDataKey.value = dataTypeKeys[4]
+                                        selectedSensorDataKey.value = dataTypeKeys[5]
                                     }
                                 }
                                 sensorDataPickerExpanded = false
