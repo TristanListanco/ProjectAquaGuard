@@ -9,21 +9,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aquaguardian.projectaquaguard.core.vms.MainVMService
 import com.aquaguardian.projectaquaguard.ui.views.AuthenticationView
+import com.aquaguardian.projectaquaguard.ui.views.CsvDownloader
 import com.aquaguardian.projectaquaguard.ui.views.MainAppView
 import com.aquaguardian.projectaquaguard.ui.views.ViewTank
 import com.aquaguardian.projectaquaguard.ui.views.WelcomeScreen
 import com.aquaguardian.projectaquaguard.ui.views.debug.DataDebugger
-import com.google.firebase.auth.FirebaseAuth
-
-fun observeAuthenticationState(): MutableLiveData<Boolean> {
-    val isAuthenticated = MutableLiveData<Boolean>()
-
-    FirebaseAuth.getInstance().addAuthStateListener { firebaseAuth ->
-        isAuthenticated.value = firebaseAuth.currentUser != null
-    }
-
-    return isAuthenticated
-}
 
 /**
  * MainRouter for Pages with fullscreen UI
@@ -68,10 +58,17 @@ fun AquaGuardianRouter(mainVMService: MainVMService) {
             DataDebugger(navController, mainVMService)
         }
 
+        composable(route = "${MainRoutes.CsvDownloader.route}/{tankId}") {navBackStackEntry ->
+            val tankId = navBackStackEntry.arguments?.getString("tankId")
+            tankId?.let {
+                CsvDownloader(navController, mainVMService, it)
+            }
+        }
+
         composable(route ="${ MainRoutes.ViewTank.route}/{tankId}") {navBackStackEntry ->
             val tankId = navBackStackEntry.arguments?.getString("tankId")
-            tankId?.let { tankId
-                ViewTank(navController, tankId)
+            tankId?.let {
+                ViewTank(navController, it)
 
             }
         }

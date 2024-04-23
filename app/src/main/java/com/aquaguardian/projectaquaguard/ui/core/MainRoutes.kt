@@ -5,6 +5,6 @@ sealed class MainRoutes(val route: String) {
     data object MainNav : MainRoutes("main")
     data object AuthenticationView : MainRoutes("auth")
     data object ViewTank: MainRoutes("view_tank")
-
     data object DataDebugger: MainRoutes("view_tank")
+    data object CsvDownloader: MainRoutes("csv_download")
 }

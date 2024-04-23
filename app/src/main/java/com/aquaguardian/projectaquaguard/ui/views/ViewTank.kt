@@ -782,7 +782,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
         }
 
         Button(onClick = {
-
+            nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}")
         }, modifier = Modifier.constrainAs(csvbtn){
             top.linkTo(graphContainer.bottom, 16.dp)
             start.linkTo(parent.start)
