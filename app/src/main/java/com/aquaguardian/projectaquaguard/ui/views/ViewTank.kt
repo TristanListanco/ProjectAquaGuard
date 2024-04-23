@@ -489,23 +489,43 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                         .padding(16.dp),
                     verticalArrangement = Arrangement.Bottom
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.waterLevel_text),
-                        color = MaterialTheme.colorScheme.onTertiary,
-                        fontWeight = FontWeight.Normal,
-                        fontFamily = productsans_family,
-                        fontSize = 20.sp,
-                        modifier = Modifier
-                            .fillMaxWidth(1f)
-                            .padding(8.dp),
-                    )
+                    if (wlvlData.value != null) {
+                        Text(
+                            text = stringResource(id = R.string.waterLevel_text),
+                            color = when(wlvlData.value!!.first.toInt() < 67) {
+                                true -> MaterialTheme.colorScheme.tertiary
+                                false -> MaterialTheme.colorScheme.onTertiary
+                            },
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = productsans_family,
+                            fontSize = 20.sp,
+                            modifier = Modifier
+                                .fillMaxWidth(1f)
+                                .padding(8.dp),
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(id = R.string.waterLevel_text),
+                            color = MaterialTheme.colorScheme.tertiary,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = productsans_family,
+                            fontSize = 20.sp,
+                            modifier = Modifier
+                                .fillMaxWidth(1f)
+                                .padding(8.dp),
+                        )
+                    }
+
 
                     if (wlvlData.value != null) {
                         val wlvl = wlvlData.value!!.first.toIntOrNull() ?: 0
                         waterLevelHeightDP.intValue = wlvl.map(0, 100, 0, 150)
                         expanded = !expanded
                         Text(
-                            color = MaterialTheme.colorScheme.onTertiary,
+                            color = when(wlvlData.value!!.first.toInt() < 31){
+                                true -> MaterialTheme.colorScheme.tertiary
+                                false -> MaterialTheme.colorScheme.onTertiary
+                            },
                             fontWeight = FontWeight.Bold,
                             fontFamily = productsans_family,
                             fontSize = 40.sp,
@@ -514,7 +534,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                         )
                     } else {
                         Text(
-                            color = MaterialTheme.colorScheme.onTertiary,
+                            color = MaterialTheme.colorScheme.tertiary,
                             fontWeight = FontWeight.Bold,
                             fontFamily = productsans_family,
                             fontSize = 40.sp,
