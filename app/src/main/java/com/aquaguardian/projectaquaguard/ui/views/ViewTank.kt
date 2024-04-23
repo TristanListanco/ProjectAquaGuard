@@ -582,7 +582,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
-                    modifier = Modifier.padding(start = 16.dp, end = 8.dp)
+                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                    onClick = {
+                        nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}?sensorId=phData")
+                    }
                 )
             } else {
                 SensorCard(
@@ -591,7 +594,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
-                    modifier = Modifier.padding(start = 16.dp, end = 8.dp)
+                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                    onClick = {
+                        nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}?sensorId=phData")
+                    }
                 )
             }
             if (tdsData.value != null) {
@@ -601,7 +607,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    onClick = {
+                        nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}?sensorId=tds")
+                    }
                 )
             } else {
                 SensorCard(
@@ -610,7 +619,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    onClick = {
+                        nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}?sensorId=tds")
+                    }
                 )
             }
             if (turbidityData.value != null) {
@@ -620,7 +632,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    onClick = {
+                        nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}?sensorId=turbidity")
+                    }
                 )
             } else {
                 SensorCard(
@@ -629,7 +644,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    onClick = {
+                        nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}?sensorId=turbidity")
+                    }
                 )
             }
             if (wtempData.value != null) {
@@ -639,7 +657,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
-                    modifier = Modifier.padding(start = 8.dp, end = 16.dp)
+                    modifier = Modifier.padding(start = 8.dp, end = 16.dp),
+                    onClick = {
+                        nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}?sensorId=wtemp")
+                    }
                 )
             } else {
                 SensorCard(
@@ -648,7 +669,10 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
-                    modifier = Modifier.padding(start = 8.dp, end = 16.dp)
+                    modifier = Modifier.padding(start = 8.dp, end = 16.dp),
+                    onClick = {
+                        nav.navigate("${MainRoutes.CsvDownloader.route}/${tankId}?sensorId=wtemp")
+                    }
                 )
             }
         }

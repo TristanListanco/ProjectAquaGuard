@@ -1,5 +1,6 @@
 package com.aquaguardian.projectaquaguard.ui.views
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,7 +50,10 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CsvDownloader(
-    navHostController: NavHostController, mainVMService: MainVMService, tankId: String?
+    navHostController: NavHostController,
+    mainVMService: MainVMService,
+    tankId: String?,
+    sensorId: String?
 ) {
 
     val scrollState = rememberScrollState()
@@ -89,6 +93,9 @@ fun CsvDownloader(
     val ref1 = database.getReference(wlvlPath)
 
     DisposableEffect(true) {
+        if(sensorId != null){
+            Toast.makeText(ctx, "From $sensorId!", Toast.LENGTH_SHORT).show()
+        }
         val wlevelQuery = ref1.orderByKey().limitToLast(20)
         val wlevelListener = object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {

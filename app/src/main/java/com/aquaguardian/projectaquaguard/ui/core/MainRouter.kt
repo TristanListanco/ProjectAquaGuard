@@ -58,10 +58,11 @@ fun AquaGuardianRouter(mainVMService: MainVMService) {
             DataDebugger(navController, mainVMService)
         }
 
-        composable(route = "${MainRoutes.CsvDownloader.route}/{tankId}") {navBackStackEntry ->
+        composable(route = "${MainRoutes.CsvDownloader.route}/{tankId}?sensorId={sensorId}") {navBackStackEntry ->
             val tankId = navBackStackEntry.arguments?.getString("tankId")
+            val sensorId = navBackStackEntry.arguments?.getString("sensorId")
             tankId?.let {
-                CsvDownloader(navController, mainVMService, it)
+                CsvDownloader(navController, mainVMService, it, sensorId)
             }
         }
 
