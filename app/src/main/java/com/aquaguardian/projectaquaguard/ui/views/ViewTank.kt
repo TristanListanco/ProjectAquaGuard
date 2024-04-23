@@ -2,7 +2,9 @@ package com.aquaguardian.projectaquaguard.ui.views
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -358,7 +360,11 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
     val waterLevelHeightDP = remember { mutableIntStateOf(0) }
     val height = animateDpAsState(
         if (expanded) waterLevelHeightDP.intValue.dp else waterLevelHeightDP.intValue.dp,
-        label = "Transition"
+        label = "wlvl_transistion",
+        animationSpec = tween(
+            durationMillis = 1500,
+            easing = FastOutSlowInEasing
+        ),
     )
 
     val listOfSensors = listOf(
@@ -382,7 +388,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             .padding(bottom = 16.dp)
     ) {
 
-        val (topButtonGroup, titleText, statusCard, label1, sensorsContainer, label2, graphContainer) = createRefs()
+        val (topButtonGroup, titleText, statusCard, label1, sensorsContainer, label2, graphContainer, csvbtn) = createRefs()
 
         Row(modifier = Modifier
             .constrainAs(topButtonGroup) {
@@ -538,7 +544,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                             fontWeight = FontWeight.Bold,
                             fontFamily = productsans_family,
                             fontSize = 40.sp,
-                            text = "0%",
+                            text = "... %",
                             modifier = Modifier.padding(8.dp)
                         )
                     }
@@ -773,6 +779,16 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             }
 
 
+        }
+
+        Button(onClick = {
+
+        }, modifier = Modifier.constrainAs(csvbtn){
+            top.linkTo(graphContainer.bottom, 16.dp)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }) {
+            Text(text = "Download CSV", fontSize = 12.sp)
         }
     }
 }
