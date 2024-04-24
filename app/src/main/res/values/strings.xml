@@ -21,7 +21,7 @@ We will collect personal identification information from Users only if they volu
     <string name="tank1_details_title">Unfiltered Water</string>
     <string name="tank1_details_description">
 The water tank without filtration doesn\'t have any cleaning system, so it\'s not safe for regular use. It only keeps track of how much water is in the tank.</string>
-    <string name="tank2_details_title">Rapid Sand Filter</string>
+    <string name="tank2_details_title">Filtered Tank</string>
     <string name="tank2_details_description">This water tank consists of anthracite, silica sand that filters all of the impurities and heavy metals inside the water</string>
     <string name="tank3_details_title">Activated Carbon Filter</string>
     <string name="tank3_details_description">This water tank consists of activated carbon and energy beads that neutralizes pH levels in the water</string>

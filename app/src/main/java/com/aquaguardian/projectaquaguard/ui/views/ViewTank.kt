@@ -106,7 +106,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 snapshot.children.lastOrNull()?.let { recentSnapshot ->
                     val sortedEntries = recentSnapshot.children.sortedByDescending { it.key }
                     wlvlData.value =
-                        sortedEntries[0].value.toString() to recentSnapshot.key.toString()
+                        sortedEntries[0].value.toString().replace(".00", "") to recentSnapshot.key.toString()
 
                     ref1.removeEventListener(this)
                 }
@@ -125,9 +125,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 if (wlvlDataList.size < 30) {
                     val timestamp = dataSnapshot.key ?: ""
                     val value = dataSnapshot.value as? Map<*, *>
-                    if (value?.containsKey("wlvl") == true) {
-                        wlvlDataList.add(Pair(timestamp, value.values.first().toString()))
-                    }
+                    wlvlDataList.add(Pair(timestamp, value!!.values.first().toString()))
                 }
             }
 
@@ -154,7 +152,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 snapshot.children.lastOrNull()?.let { recentSnapshot ->
                     val sortedEntries = recentSnapshot.children.sortedByDescending { it.key }
                     wtempData.value =
-                        sortedEntries[0].value.toString() to recentSnapshot.key.toString()
+                        removeDecimal(sortedEntries[0].value.toString()) to recentSnapshot.key.toString()
 
                     ref2.removeEventListener(this)
                 }
@@ -501,7 +499,8 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                     )
 
                     if (wlvlData.value != null) {
-                        val wlvl = wlvlData.value!!.first.toIntOrNull() ?: 0
+                        Log.d("ViewTank", wlvlData.value!!.first.toString())
+                        val wlvl = wlvlData.value!!.first.replace(".00", "").toIntOrNull() ?: 0
                         waterLevelHeightDP.intValue = wlvl.map(0, 100, 0, 150)
                         expanded = !expanded
                         Text(
@@ -590,7 +589,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
             if (turbidityData.value != null) {
                 SensorCard(
                     sensorType = stringResource(id = R.string.turbidityTSS_text),
-                    sensorValue = turbidityData.value!!.second,
+                    sensorValue = turbidityData.value!!.first,
                     cardStatus = "Updated - Just Now",
                     icon =
                     painterResource(id = R.drawable.waterdrop),
@@ -835,5 +834,14 @@ fun DataListItem(
     }
     if (!isEndOfList) {
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
+    }
+}
+
+fun removeDecimal(value: String): String {
+    val decimalIndex = value.indexOf('.')
+    return if (decimalIndex != -1) {
+        value.substring(0, decimalIndex)
+    } else {
+        value
     }
 }
