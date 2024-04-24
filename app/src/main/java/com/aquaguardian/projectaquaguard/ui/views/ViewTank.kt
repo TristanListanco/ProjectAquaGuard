@@ -171,7 +171,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 if (wtempDataList.size < 30) {
                     val timestamp = dataSnapshot.key ?: ""
                     val value = dataSnapshot.value as? Map<*, *>
-                    if (value?.containsKey("wtemp") == true) {
+                    if (value != null) {
                         wtempDataList.add(Pair(timestamp, value.values.first().toString()))
                     }
                 }
@@ -219,7 +219,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 if (phDataList.size < 30) {
                     val timestamp = dataSnapshot.key ?: ""
                     val value = dataSnapshot.value as? Map<*, *>
-                    if (value?.containsKey("phData") == true) {
+                    if (value != null) {
                         phDataList.add(Pair(timestamp, value.values.first().toString()))
                     }
                 }
@@ -269,7 +269,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 if (turbidityDataList.size < 30) {
                     val timestamp = dataSnapshot.key ?: ""
                     val value = dataSnapshot.value as? Map<*, *>
-                    if (value?.containsKey("turbidity") == true) {
+                    if (value != null) {
                         turbidityDataList.add(Pair(timestamp, value.values.first().toString()))
                     }
                 }
@@ -316,7 +316,7 @@ fun ViewTank(nav: NavHostController, tankId: String? = null) {
                 if (tdsDataList.size < 30) {
                     val timestamp = dataSnapshot.key ?: ""
                     val value = dataSnapshot.value as? Map<*, *>
-                    if (value?.containsKey("tds") == true) {
+                    if (value != null) {
                         tdsDataList.add(Pair(timestamp, value.values.first().toString()))
                     }
                 }
