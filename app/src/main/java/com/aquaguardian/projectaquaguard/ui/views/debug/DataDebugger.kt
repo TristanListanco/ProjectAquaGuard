@@ -862,7 +862,6 @@ fun DataDebugger(nav: NavHostController, mainVMService: MainVMService) {
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Next,
                         keyboardType = KeyboardType.Text,
-                        autoCorrect = false,
                         capitalization = KeyboardCapitalization.None,
 
 

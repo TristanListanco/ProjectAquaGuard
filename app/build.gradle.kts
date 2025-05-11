@@ -1,18 +1,19 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.compose.compiler)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
 
 android {
     namespace = "com.aquaguardian.projectaquaguard"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.aquaguardian.projectaquaguard"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -65,7 +66,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation("androidx.navigation:navigation-compose:2.9.0")
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
@@ -78,7 +79,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
